@@ -1,7 +1,7 @@
 ---
 title: Untitled
 format:
-  slides-typst: default
+  projector-typst: default
 ---
 
 ## Introduction
