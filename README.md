@@ -1,11 +1,12 @@
-# Slides Format
+# `slides` Format
+
+A Quarto format for making slides with [polylux](https://github.com/andreasKroepelin/polylux).
+This template tries to replicate the Quarto-side syntax for [Beamer](https://quarto.org/docs/presentations/beamer.html), [PowerPoint](https://quarto.org/docs/presentations/powerpoint.html), and [Revealjs](https://quarto.org/docs/presentations/revealjs/) slides.
 
 ## Installing
 
-_TODO_: Replace the `<github-organization>` with your GitHub organization.
-
 ```bash
-quarto use template <github-organization>/slides
+quarto use template christopherkenny/slides
 ```
 
 This will install the format extension and create an example qmd file
