@@ -12,7 +12,13 @@ quarto use template christopherkenny/projector
 This will install the format extension and create an example `.qmd` file
 that you can use as a starting place for your document.
 
-## Using
+## Using `projector` to make Polylux slides
 
-_TODO_: Describe how to use your format.
+This template includes several custom arguments that can be supplied in the YAML header.
+
+- `handout`: If `true`, the slides will be formatted for printing as a handout. Default: `false`.
+
+
+### Using other Typst functions
+
 

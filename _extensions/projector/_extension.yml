@@ -11,4 +11,5 @@ contributes:
         - definitions.typ
       filters:
         - polylux.lua
+      date-format: long
 

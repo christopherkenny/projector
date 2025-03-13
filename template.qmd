@@ -23,5 +23,11 @@ You can learn more about creating custom Typst templates here:
 
 <https://quarto.org/docs/prerelease/1.4/typst.html#custom-formats>
 
+## Incremental Lists
 
+- First item
+- Second item
+- Third item
+
+## Using Typst functions
 

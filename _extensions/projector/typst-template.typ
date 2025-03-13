@@ -18,6 +18,7 @@
   toc_title: none,
   toc_depth: none,
   toc_indent: 1.5em,
+  handout: false,
   doc,
 ) = {
 
@@ -36,6 +37,10 @@
            size: fontsize)
            
   set heading(numbering: sectionnumbering)
+  
+  if handout {
+    enable-handout-mode(true)
+  }
 
   if title != none or authors != none or date != none {
   
