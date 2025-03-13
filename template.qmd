@@ -1,6 +1,13 @@
 ---
 title: A presentation with Polylux via Quarto
-author: John Doe
+author:
+  - name: Author One
+    affiliations:
+      - name: Harvard University
+  - name: Author Two
+    affiliations:
+      - name: Yale University
+date: today
 format:
   projector-typst:
     keep-typ: true
