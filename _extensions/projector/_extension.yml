@@ -8,4 +8,7 @@ contributes:
       template-partials:
         - typst-template.typ
         - typst-show.typ
+        - definitions.typ
+      filters:
+        - polylux.lua
 

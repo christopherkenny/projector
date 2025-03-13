@@ -1,7 +1,9 @@
 ---
-title: Untitled
+title: A presentation with Polylux via Quarto
+author: John Doe
 format:
-  projector-typst: default
+  projector-typst:
+    keep-typ: true
 ---
 
 ## Introduction
