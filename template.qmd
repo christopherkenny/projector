@@ -53,6 +53,22 @@ This demonstrates something useful.
 
 Plain information.
 
+## Callouts: Custom to this template
+
+And here's a little extra flair
+
+### Tip {.tip}
+
+A tip for the viewer
+
+### Note {.note}
+
+A thing to note
+
+### Warning! {.warning}
+
+For a little less caution than an alert
+
 
 
 ## Using Typst functions
