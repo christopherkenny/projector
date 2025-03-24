@@ -61,9 +61,9 @@ And here's a little extra flair
 
 A tip for the viewer
 
-### Note {.note}
+### Reminder {.reminder}
 
-A thing to note
+A thing to remember
 
 ### Warning! {.warning}
 

@@ -67,7 +67,7 @@ function Header(el)
       alert = "alert",
       example = "example",
       tip = "tip",
-      note = "note",
+      reminder = "reminder",
       info = "info",
       warning = "warning"
     }

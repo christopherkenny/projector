@@ -211,7 +211,7 @@
   icon_color: green
 )
 
-#let note(title, body) = callout(
+#let reminder(title, body) = callout(
   title: title,
   body: body,
   background_color: rgb("f5f5dc"),
