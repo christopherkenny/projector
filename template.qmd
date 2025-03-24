@@ -11,6 +11,7 @@ date: today
 format:
   projector-typst:
     keep-typ: true
+bullet-incremental: true
 ---
 
 ## Introduction
@@ -30,6 +31,17 @@ You can learn more about creating custom Typst templates here:
 - First item
 - Second item
 - Third item
+
+## Non-Incremental
+
+:::{.nonincremental}
+
+- one-th
+- two-th
+- three-th
+
+:::
+
 
 ---
 
