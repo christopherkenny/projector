@@ -173,6 +173,8 @@
     )
 }
 
+// Projector section slides
+
 // TODO 0.13 update to slide
 #let projector-register-section(name) = polylux-slide[
   #set align(horizon)
@@ -182,3 +184,57 @@
 
   #strong(name)
 ]
+
+// Shortcuts for callout types
+#let alert(title, body) = callout(
+  title: title,
+  body: body,
+  background_color: red,
+  icon: warning,
+  icon_color: white
+)
+
+#let example(title, body) = callout(
+  title: title,
+  body: body,
+  background_color: rgb("e5f5ff"),
+  icon: lightbulb,
+  icon_color: blue
+)
+
+#let tip(title, body) = callout(
+  title: title,
+  body: body,
+  background_color: rgb("d2f4d2"),
+  icon: check,
+  icon_color: green
+)
+
+#let note(title, body) = callout(
+  title: title,
+  body: body,
+  background_color: rgb("f5f5dc"),
+  icon: note,
+  icon_color: black
+)
+
+#let info(title, body) = callout(
+  title: title,
+  body: body,
+  background_color: rgb("e0f0ff"),
+  icon: info,
+  icon_color: blue
+)
+
+#let warning(title, body) = callout(
+  title: title,
+  body: body,
+  background_color: orange,
+  icon: warning,
+  icon_color: white
+)
+
+#let projector-block(title, body) = callout(
+  title: title,
+  body: body
+)

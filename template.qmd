@@ -37,6 +37,19 @@ An untitled slide?
 
 Yes! It's possible with `---`.
 
+## Callouts: Mapped from Beamer
+
+### Caution! {.alert}
+
+This is an important warning.
+
+### Try This {.example}
+
+This demonstrates something useful.
+
+
+
+
 ## Using Typst functions
 
 explain here
