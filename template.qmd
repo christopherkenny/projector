@@ -19,9 +19,11 @@ format:
 
 ## More Information
 
-You can learn more about creating custom Typst templates here: 
+You can learn more about creating custom Typst templates here:
 
 <https://quarto.org/docs/prerelease/1.4/typst.html#custom-formats>
+
+# Features
 
 ## Incremental Lists
 
@@ -32,4 +34,3 @@ You can learn more about creating custom Typst templates here:
 ## Using Typst functions
 
 explain here
-
