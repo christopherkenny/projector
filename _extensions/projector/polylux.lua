@@ -31,12 +31,12 @@ end
 function Header(el)
   local blocks = {}
 
-  -- Flush any pending callout
+  -- FLUSH if any pending callout exists (before handling the next one)
   for _, b in ipairs(flush_callout()) do
     table.insert(blocks, b)
   end
 
-  -- Close open slide if needed
+  -- Close slide if needed
   if in_slide and el.level <= 2 then
     table.insert(blocks, pandoc.RawBlock("typst", "]"))
     table.insert(blocks, pandoc.RawBlock("typst", ""))
@@ -44,13 +44,11 @@ function Header(el)
   end
 
   if el.level == 1 then
-    -- TODO 0.13 update to #toolbox.register-section
     local title = pandoc.utils.stringify(el)
     table.insert(blocks, pandoc.RawBlock("typst", ""))
     table.insert(blocks, pandoc.RawBlock("typst", '#projector-register-section("' .. title .. '")'))
     return blocks
   elseif el.level == 2 then
-    -- TODO 0.13 update to #slide
     local title = pandoc.utils.stringify(el)
     table.insert(blocks, pandoc.RawBlock("typst", ""))
     table.insert(blocks, pandoc.RawBlock("typst", "#polylux-slide["))
@@ -58,10 +56,13 @@ function Header(el)
     in_slide = true
     return blocks
   elseif el.level == 3 then
-    local title = pandoc.utils.stringify(el)
-    local class = el.classes[1]
+    -- flush any pending callout before starting a new one
+    for _, b in ipairs(flush_callout()) do
+      table.insert(blocks, b)
+    end
 
-    -- Class-based macro matching
+    local title = pandoc.utils.stringify(el)
+
     local macro_map = {
       alert = "alert",
       example = "example",
@@ -71,7 +72,7 @@ function Header(el)
       warning = "warning"
     }
 
-    local macro = "projector-block" -- default fallback
+    local macro = "projector-block" -- default
     for _, cls in ipairs(el.classes) do
       if macro_map[cls] then
         macro = macro_map[cls]
@@ -84,7 +85,7 @@ function Header(el)
       macro = macro
     }
 
-    return {} -- don't emit anything yet
+    return blocks -- return what we've gathered (including flushed block)
   end
 end
 

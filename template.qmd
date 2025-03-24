@@ -39,6 +39,8 @@ Yes! It's possible with `---`.
 
 ## Callouts: Mapped from Beamer
 
+We can use the heading values to control callouts, like so:
+
 ### Caution! {.alert}
 
 This is an important warning.
