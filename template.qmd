@@ -31,3 +31,5 @@ You can learn more about creating custom Typst templates here:
 
 ## Using Typst functions
 
+explain here
+
