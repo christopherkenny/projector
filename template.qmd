@@ -47,6 +47,9 @@ This is an important warning.
 
 This demonstrates something useful.
 
+### Note
+
+Plain information.
 
 
 

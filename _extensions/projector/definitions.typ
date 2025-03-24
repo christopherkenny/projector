@@ -1,4 +1,5 @@
 #import "@preview/polylux:0.3.1": *
+#import "@preview/fontawesome:0.5.0": *
 
 // Some definitions presupposed by pandoc's typst output.
 #let blockquote(body) = [
@@ -190,7 +191,7 @@
   title: title,
   body: body,
   background_color: red,
-  icon: warning,
+  icon: fa-icon("triangle-exclamation"),
   icon_color: white
 )
 
@@ -198,7 +199,7 @@
   title: title,
   body: body,
   background_color: rgb("e5f5ff"),
-  icon: lightbulb,
+  icon: fa-icon("lightbulb"),
   icon_color: blue
 )
 
@@ -206,7 +207,7 @@
   title: title,
   body: body,
   background_color: rgb("d2f4d2"),
-  icon: check,
+  icon: fa-icon("circle-check"),
   icon_color: green
 )
 
@@ -214,7 +215,7 @@
   title: title,
   body: body,
   background_color: rgb("f5f5dc"),
-  icon: note,
+  icon: fa-icon("sticky-note"),
   icon_color: black
 )
 
@@ -222,7 +223,7 @@
   title: title,
   body: body,
   background_color: rgb("e0f0ff"),
-  icon: info,
+  icon: fa-icon("circle-info"),
   icon_color: blue
 )
 
@@ -230,7 +231,7 @@
   title: title,
   body: body,
   background_color: orange,
-  icon: warning,
+  icon: fa-icon("triangle-exclamation"),
   icon_color: white
 )
 
