@@ -1,5 +1,23 @@
 local in_slide = false
 
+function HorizontalRule()
+  local blocks = {}
+
+  -- Close previous slide if open
+  if in_slide then
+    table.insert(blocks, pandoc.RawBlock("typst", "]"))
+    table.insert(blocks, pandoc.RawBlock("typst", "")) -- blank line
+  end
+
+  -- Start a new unnamed slide
+  table.insert(blocks, pandoc.RawBlock("typst", "")) -- blank line
+  -- TODO 0.13 update to #slide
+  table.insert(blocks, pandoc.RawBlock("typst", "#polylux-slide["))
+
+  in_slide = true
+  return blocks
+end
+
 function Header(el)
   local blocks = {}
 
@@ -15,7 +33,7 @@ function Header(el)
     local title = pandoc.utils.stringify(el)
     table.insert(blocks, pandoc.RawBlock("typst", "")) -- blank line
     -- TODO 0.13 update to #toolbox.register-section later
-    table.insert(blocks, pandoc.RawBlock("typst", '#utils.register-section("' .. title .. '")'))
+    table.insert(blocks, pandoc.RawBlock("typst", '#projector-register-section("' .. title .. '")'))
     return blocks
   elseif el.level == 2 then
     -- Start a new slide
@@ -48,6 +66,6 @@ function finalize(doc)
 end
 
 return {
-  { Header = Header },
+  { Header = Header,  HorizontalRule = HorizontalRule },
   { Pandoc = finalize }
 }

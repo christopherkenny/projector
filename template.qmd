@@ -31,6 +31,12 @@ You can learn more about creating custom Typst templates here:
 - Second item
 - Third item
 
+---
+
+An untitled slide?
+
+Yes! It's possible with `---`.
+
 ## Using Typst functions
 
 explain here
