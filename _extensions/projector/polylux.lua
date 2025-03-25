@@ -1,5 +1,5 @@
 -- Typst + Quarto Polylux Lua Filter
--- Updated with support for slides, callouts, pause, bullet list control, and grid-based column layout with comprehensive alignment options
+-- Updated with support for slides, callouts, pause, bullet list control, column layout, page backgrounds, and table of contents
 
 local in_slide = false
 local pending_callout = nil
@@ -7,6 +7,8 @@ local buffered_blocks = {}
 local global_incremental = false
 local in_incremental_div = false
 local in_nonincremental_div = false
+local background_image = nil
+local show_toc = false
 
 function Meta(meta)
   if meta["bullet-incremental"] == true then
@@ -15,6 +17,10 @@ function Meta(meta)
 
   if meta["background-image"] then
     background_image = pandoc.utils.stringify(meta["background-image"])
+  end
+
+  if meta["toc"] == true then
+    show_toc = true
   end
 
   return meta
@@ -37,6 +43,7 @@ local function flush_callout()
   return blocks
 end
 
+-- Header, HorizontalRule, Para, BulletList, Div functions unchanged...
 function Header(el)
   local blocks = {}
   for _, b in ipairs(flush_callout()) do
@@ -203,12 +210,25 @@ function Div(el)
   return el
 end
 
+
 function finalize(doc)
   local blocks = doc.blocks
 
   if background_image then
     local bg = '#set page(background: image("' .. background_image .. '", width: 100%, height: 100%))'
     table.insert(blocks, 1, pandoc.RawBlock("typst", bg))
+  end
+
+  if show_toc then
+    local toc_slide = {
+      pandoc.RawBlock("typst", "#polylux-slide["),
+      pandoc.RawBlock("typst", "= Outline"),
+      pandoc.RawBlock("typst", "#outline"),
+      pandoc.RawBlock("typst", "]")
+    }
+    for i = #toc_slide, 1, -1 do
+      table.insert(blocks, 1, toc_slide[i])
+    end
   end
 
   for _, b in ipairs(flush_callout()) do
