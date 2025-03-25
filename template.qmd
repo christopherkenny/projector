@@ -72,7 +72,7 @@ contents right
 ::::
 
 
-## Split slides, fixed width
+## Split slides, fixed width and centered
 
 :::: {.columns align=center totalwidth=20em}
 
