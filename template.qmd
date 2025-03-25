@@ -89,6 +89,15 @@ contents...
 
 ::::
 
+## Adding speaker notes
+
+Polylux uses pdfpc to store notes.
+You can create them via
+
+:::{.notes}
+Adding this will create notes readable to the presenter in pdfpc.
+:::
+
 # Callouts
 
 ## Callouts: Mapped from Beamer
@@ -129,3 +138,14 @@ For a little less caution than an alert
 ## Using Typst functions
 
 explain here
+
+
+# Styling your slides
+
+## Fonts
+
+## Colors
+
+## Footer
+
+## Code

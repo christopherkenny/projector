@@ -19,6 +19,7 @@
   toc_depth: none,
   toc_indent: 1.5em,
   handout: false,
+  background: none,
   doc,
 ) = {
 
@@ -28,6 +29,10 @@
     margin: margin,
     numbering: "1",
   )
+
+  if background != none {
+    set page(background: image(background, width: 100%, height: 100%))
+  }
 
   set par(justify: true)
 

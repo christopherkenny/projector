@@ -1,22 +1,16 @@
 -- Typst + Quarto Polylux Lua Filter
--- Updated with support for slides, callouts, pause, bullet list control, column layout, page backgrounds, and table of contents
+-- Updated with support for slides, callouts, pause, bullet list control, column layout, and table of contents
 
-local in_slide = false
 local pending_callout = nil
 local buffered_blocks = {}
 local global_incremental = false
 local in_incremental_div = false
 local in_nonincremental_div = false
-local background_image = nil
 local show_toc = false
 
 function Meta(meta)
   if meta["bullet-incremental"] == true then
     global_incremental = true
-  end
-
-  if meta["background-image"] then
-    background_image = pandoc.utils.stringify(meta["background-image"])
   end
 
   if meta["toc"] == true then
@@ -213,11 +207,6 @@ end
 
 function finalize(doc)
   local blocks = doc.blocks
-
-  if background_image then
-    local bg = '#set page(background: image("' .. background_image .. '", width: 100%, height: 100%))'
-    table.insert(blocks, 1, pandoc.RawBlock("typst", bg))
-  end
 
   if show_toc then
     local toc_slide = {

@@ -53,5 +53,8 @@ $if(toc-indent)$
 $endif$
   toc_depth: $toc-depth$,
   cols: $if(columns)$$columns$$else$1$endif$,
+$if(background-image)$
+  background: $background-image$,
+$endif$
   doc,
 )
