@@ -12,7 +12,10 @@ format:
   projector-typst:
     keep-typ: true
 bullet-incremental: true
+toc: true
 ---
+
+# A Presentation Demo
 
 ## Introduction
 

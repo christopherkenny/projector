@@ -82,8 +82,22 @@
         ]
       ]
     }
-
     ]
+
+    if toc {
+      polylux-slide[
+        #let title = if toc_title == none {
+          auto
+        } else {
+          toc_title
+        #heading(toc_title)
+        #set text(size: 2em)
+        // TODO 0.13 update to use new toolbox version
+        #align(horizon)[
+          #polylux-outline()
+        ]
+      ]
+    }
 
   }
 
