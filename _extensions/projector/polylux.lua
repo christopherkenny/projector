@@ -12,6 +12,11 @@ function Meta(meta)
   if meta["bullet-incremental"] == true then
     global_incremental = true
   end
+
+  if meta["background-image"] then
+    background_image = pandoc.utils.stringify(meta["background-image"])
+  end
+
   return meta
 end
 
@@ -200,13 +205,21 @@ end
 
 function finalize(doc)
   local blocks = doc.blocks
+
+  if background_image then
+    local bg = '#set page(background: image("' .. background_image .. '", width: 100%, height: 100%))'
+    table.insert(blocks, 1, pandoc.RawBlock("typst", bg))
+  end
+
   for _, b in ipairs(flush_callout()) do
     table.insert(blocks, b)
   end
+
   if in_slide then
     table.insert(blocks, pandoc.RawBlock("typst", "]"))
     table.insert(blocks, pandoc.RawBlock("typst", ""))
   end
+
   return pandoc.Pandoc(blocks, doc.meta)
 end
 
