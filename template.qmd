@@ -89,6 +89,7 @@ contents...
 
 ::::
 
+# Callouts
 
 ## Callouts: Mapped from Beamer
 
@@ -123,6 +124,7 @@ A thing to remember
 For a little less caution than an alert
 
 
+# Typst Specialties
 
 ## Using Typst functions
 

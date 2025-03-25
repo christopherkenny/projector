@@ -31,10 +31,12 @@
 
   set par(justify: true)
 
-  set text(lang: lang,
-           region: region,
-           font: font,
-           size: fontsize)
+  set text(
+    lang: lang,
+    region: region,
+    font: font,
+    size: fontsize
+  )
 
   set heading(numbering: sectionnumbering)
   show heading: set text(size: 1.5em)
@@ -60,6 +62,7 @@
           ]
         ]
       }
+      #set text(size: 1.25em)
 
       #if authors != none and authors != [] {
         let count = authors.len()
