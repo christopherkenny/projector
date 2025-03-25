@@ -42,12 +42,50 @@ You can learn more about creating custom Typst templates here:
 
 :::
 
+## And manual pauses
+
+Sometimes you write text
+
+. . .
+
+that needs time to be ready
+
 
 ---
 
 An untitled slide?
 
 Yes! It's possible with `---`.
+
+## Split slides
+
+::::  {.columns align=top .onlytextwidth}
+
+::: {.column width="40%" align=center}
+contents left
+:::
+
+::: {.column width="60%"}
+contents right
+:::
+
+::::
+
+
+## Split slides, fixed width
+
+:::: {.columns align=center totalwidth=20em}
+
+::: {.column width="40%"}
+contents...
+:::
+
+::: {.column width="60%" align=bottom}
+contents...
+:::
+
+::::
+
 
 ## Callouts: Mapped from Beamer
 
