@@ -113,23 +113,21 @@ function Para(el)
 end
 
 function BulletList(el)
-  if pending_callout then
-    table.insert(buffered_blocks, el)
-    return {}
-  end
   if in_nonincremental_div then
-    return pandoc.BulletList(el)
+    return el
   end
-  if not global_incremental and not in_incremental_div then
-    return pandoc.BulletList(el)
+
+  if in_incremental_div or global_incremental then
+    local rendered = pandoc.write(pandoc.Pandoc({ el }), "markdown")
+    rendered = rendered:gsub("%s+$", "")
+    return {
+      pandoc.RawBlock("typst", "#line-by-line["),
+      pandoc.RawBlock("typst", rendered),
+      pandoc.RawBlock("typst", "]")
+    }
   end
-  local rendered = pandoc.write(pandoc.Pandoc({ el }), "markdown")
-  rendered = rendered:gsub("%s+$", "")
-  return {
-    pandoc.RawBlock("typst", "#line-by-line["),
-    pandoc.RawBlock("typst", rendered),
-    pandoc.RawBlock("typst", "]")
-  }
+
+  return el
 end
 
 function Div(el)
@@ -235,11 +233,13 @@ end
 return {
   { Meta = Meta },
   {
+    traverse = 'topdown',
+    Div = Div,
+    BulletList = BulletList,
     Header = Header,
     HorizontalRule = HorizontalRule,
     Para = Para,
-    BulletList = BulletList,
-    Div = Div
+
   },
   { Pandoc = finalize }
 }
