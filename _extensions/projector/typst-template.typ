@@ -69,13 +69,15 @@
     numbering: "1",
   )
 
-  let projector-theme(doc) = {
-    doc
+  show: it => {
+    if theme != none {
+      import theme: projector-theme
+      show: projector-theme
+      it
+    } else {
+      it
+    }
   }
-  if theme != none {
-    import theme: projector-theme
-  }
-  show: projector-theme
 
   if background != none {
     set page(background: image(background, width: 100%, height: 100%))
