@@ -79,8 +79,13 @@
     }
   }
 
-  if background != none {
-    set page(background: image(background, width: 100%, height: 100%))
+  show: it => {
+    if background != none {
+      set page(background: image(background, width: 100%, height: 100%))
+      it
+    } else {
+      it
+    }
   }
 
   set par(justify: true)

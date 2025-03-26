@@ -15,6 +15,7 @@ bullet-incremental: true
 toc: true
 handout: false
 theme: greyer.typ
+#background-image: projector.png
 ---
 
 # A Presentation Demo
