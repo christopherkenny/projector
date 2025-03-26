@@ -56,5 +56,8 @@ $endif$
 $if(background-image)$
   background: $background-image$,
 $endif$
+$if(handout)$
+  handout: $handout$,
+$endif$
   doc,
 )

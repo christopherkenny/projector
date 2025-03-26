@@ -13,6 +13,7 @@ format:
     keep-typ: true
 bullet-incremental: true
 toc: true
+handout: true
 ---
 
 # A Presentation Demo
