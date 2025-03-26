@@ -45,6 +45,18 @@ You can learn more about creating custom Typst templates here:
 
 :::
 
+## Numbered lists
+
+1. A one
+2. And a twoooo
+
+## Non-Incremented Numbered lists
+
+:::{.nonincremental}
+1. And 3 (really 1) but static
+2. And 4 (really 2)
+:::
+
 ## And manual pauses
 
 Sometimes you write text

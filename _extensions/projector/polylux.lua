@@ -130,6 +130,25 @@ function BulletList(el)
   return el
 end
 
+function OrderedList(el)
+  if in_nonincremental_div then
+    return el
+  end
+
+  if in_incremental_div or global_incremental then
+    local rendered = pandoc.write(pandoc.Pandoc({ el }), "markdown")
+    rendered = rendered:gsub("%s+$", "")
+    return {
+      pandoc.RawBlock("typst", "#line-by-line["),
+      pandoc.RawBlock("typst", rendered),
+      pandoc.RawBlock("typst", "]")
+    }
+  end
+
+  return el
+end
+
+
 function Div(el)
   if el.classes:includes("columns") then
     local column_fractions = {}
@@ -186,14 +205,16 @@ function Div(el)
   if el.classes:includes("incremental") then
     in_incremental_div = true
     local walked = pandoc.walk_block(el, {
-      BulletList = BulletList
+      BulletList = BulletList,
+      OrderedList = OrderedList -- ✅ Add this
     })
     in_incremental_div = false
     return walked.content
   elseif el.classes:includes("nonincremental") then
     in_nonincremental_div = true
     local walked = pandoc.walk_block(el, {
-      BulletList = BulletList
+      BulletList = BulletList,
+      OrderedList = OrderedList -- ✅ Add this
     })
     in_nonincremental_div = false
     return walked.content
@@ -236,6 +257,7 @@ return {
     traverse = 'topdown',
     Div = Div,
     BulletList = BulletList,
+    OrderedList = OrderedList,
     Header = Header,
     HorizontalRule = HorizontalRule,
     Para = Para,
