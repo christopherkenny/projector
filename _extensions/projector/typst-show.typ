@@ -59,5 +59,8 @@ $endif$
 $if(handout)$
   handout: $handout$,
 $endif$
+$if(theme)$
+  theme: "$theme$",
+$endif$
   doc,
 )

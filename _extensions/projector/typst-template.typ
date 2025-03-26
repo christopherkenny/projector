@@ -1,4 +1,43 @@
 
+#let title-slide(title, subtitle, authors, date) = {
+  polylux-slide[
+    #if title != none {
+      align(center)[
+        #block(inset: 1em)[
+          #text(weight: "bold", size: 3em)[
+            #title
+          ]
+          #if subtitle != none {
+            linebreak()
+            text(subtitle, size: 2em, weight: "semibold")
+          }
+        ]
+      ]
+    }
+    #set text(size: 1.25em)
+
+    #if authors != none and authors != [] {
+      let count = authors.len()
+      let ncols = calc.min(count, 3)
+      grid(
+        columns: (1fr,) * ncols,
+        row-gutter: 1.5em,
+        ..authors.map(author => align(center)[
+          #author.name \
+          #author.affiliation
+        ])
+      )
+    }
+
+    #if date != none {
+      align(center)[#block(inset: 1em)[
+          #date
+        ]
+      ]
+    }
+  ]
+}
+
 #let article(
   title: none,
   subtitle: none,
@@ -20,15 +59,20 @@
   toc_indent: 1.5em,
   handout: false,
   background: none,
+  theme: none,
   doc,
 ) = {
 
-
   set page(
-    paper: paper, // TODO put back to paper with better defaults
+    paper: paper,
     margin: margin,
     numbering: "1",
   )
+
+  if theme != none {
+    import theme: projector-theme
+    show: projector-theme
+  }
 
   if background != none {
     set page(background: image(background, width: 100%, height: 100%))
@@ -40,7 +84,7 @@
     lang: lang,
     region: region,
     font: font,
-    size: fontsize
+    size: fontsize,
   )
 
   set heading(numbering: sectionnumbering)
@@ -52,62 +96,23 @@
   }
 
   if title != none or authors != none or date != none {
+    title-slide(title, subtitle, authors, date)
+  }
 
+  if toc {
     polylux-slide[
-      #if title != none {
-        align(center)[
-          #block(inset: 1em)[
-            #text(weight: "bold", size: 3em)[
-              #title
-            ]
-            #if subtitle != none {
-              linebreak()
-              text(subtitle, size: 2em, weight: "semibold")
-            }
-          ]
-        ]
+      #let title = if toc_title == none {
+        auto
+      } else {
+        toc_title
       }
-      #set text(size: 1.25em)
-
-      #if authors != none and authors != [] {
-        let count = authors.len()
-        let ncols = calc.min(count, 3)
-        grid(
-          columns: (1fr,) * ncols,
-          row-gutter: 1.5em,
-          ..authors.map(author =>
-              align(center)[
-                #author.name \
-                #author.affiliation
-              ]
-          )
-        )
-      }
-
-      #if date != none {
-        align(center)[#block(inset: 1em)[
-          #date
-        ]
+      #heading(toc_title)
+      #set text(size: 2em)
+      // TODO 0.13 update to use new toolbox version
+      #align(horizon)[
+        #polylux-outline()
       ]
-    }
     ]
-
-    if toc {
-      polylux-slide[
-        #let title = if toc_title == none {
-          auto
-        } else {
-          toc_title
-        }
-        #heading(toc_title)
-        #set text(size: 2em)
-        // TODO 0.13 update to use new toolbox version
-        #align(horizon)[
-          #polylux-outline()
-        ]
-      ]
-    }
-
   }
 
   if cols == 1 {
@@ -119,5 +124,5 @@
 
 #set table(
   inset: 6pt,
-  stroke: none
+  stroke: none,
 )

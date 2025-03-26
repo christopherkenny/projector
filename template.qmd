@@ -14,6 +14,7 @@ format:
 bullet-incremental: true
 toc: true
 handout: false
+theme: greyer.typ
 ---
 
 # A Presentation Demo
