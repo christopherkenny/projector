@@ -1,4 +1,4 @@
-#let grey-gray = rgb("#f5f5f5")
+#let grey-gray = rgb("#dbdbdb")
 #let grey-dark-gray = rgb("#4a4a4a")
 
 #let projector-theme(doc) = {
@@ -11,4 +11,14 @@
   }
   set box(stroke: black, outset: 2em)
   doc
+}
+
+#import "@preview/polylux:0.3.1": *
+#let section-slide(name) = {
+  polylux-slide[
+    #set text(size: 3em)
+    #name
+    // TODO 0.13 update to #toolbox.register-section
+    #utils.register-section(name)
+  ]
 }

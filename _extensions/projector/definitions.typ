@@ -227,3 +227,74 @@
   title: title,
   body: body
 )
+
+#let title-slide(title, subtitle, authors, date) = {
+  polylux-slide[
+    #if title != none {
+      align(center)[
+        #block(inset: 1em)[
+          #text(weight: "bold", size: 3em)[
+            #title
+          ]
+          #if subtitle != none {
+            linebreak()
+            text(subtitle, size: 2em, weight: "semibold")
+          }
+        ]
+      ]
+    }
+    #set text(size: 1.25em)
+
+    #if authors != none and authors != [] {
+      let count = authors.len()
+      let ncols = calc.min(count, 3)
+      grid(
+        columns: (1fr,) * ncols,
+        row-gutter: 1.5em,
+        ..authors.map(author => align(center)[
+          #author.name \
+          #author.affiliation
+        ])
+      )
+    }
+
+    #if date != none {
+      align(center)[#block(inset: 1em)[
+          #date
+        ]
+      ]
+    }
+  ]
+}
+
+#let toc-slide(toc_title) = {
+  polylux-slide[
+    #let title = if toc_title == none {
+      auto
+    } else {
+      toc_title
+    }
+    #heading(toc_title)
+    #set text(size: 2em)
+    // TODO 0.13 update to use new toolbox version
+    #align(horizon)[
+      #polylux-outline()
+    ]
+  ]
+}
+
+// TODO 0.13 update to slide
+#let section-slide(name) = {
+  polylux-slide[
+    #set align(horizon)
+    #set text(size: 4em)
+    // TODO 0.13 update to #toolbox.register-section
+    #utils.register-section(name)
+
+    #strong(name)
+  ]
+}
+
+$if(theme)$
+#import "$theme$": *
+$endif$
