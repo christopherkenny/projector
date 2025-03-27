@@ -104,6 +104,10 @@ contents...
 
 ::::
 
+## Images
+
+![](projector.png){width=3in fig-align="center"}
+
 ## Adding speaker notes
 
 Polylux uses pdfpc to store notes.
