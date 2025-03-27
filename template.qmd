@@ -22,13 +22,29 @@ theme: greyer.typ
 
 ## Introduction
 
-*TODO* Create an example file that demonstrates the formatting and features of your format.
+`projector` is a [Quarto](https://quarto.org/) extension to create [Polylux](https://github.com/polylux-typ/polylux) presentations in [Typst](https://typst.app/) while only writing [Markdown](https://daringfireball.net/projects/markdown/).
+
+It is designed to mimic all of the properties of beamer so that you can (hopefully) convert just by:
+
+::: {.nonincremental}
+
+1. Changing the format to `projector-typst`
+2. Changing `incremental` to `bullet-incremental`
+3. Setting a theme with a Typst file
+
+:::
+
+This Quarto extension is written by [Christopher T. Kenny](https://christophertkenny.com/).
 
 ## More Information
 
-You can learn more about creating custom Typst templates here:
+This demo explains the template.
+For more information, see the [readme](https://github.com/christopherkenny/projector/blob/main/README.md).
 
-<https://quarto.org/docs/prerelease/1.4/typst.html#custom-formats>
+Please report any issues or make suggestions at <https://github.com/christopherkenny/projector/issues>.
+
+
+Look at some theme options at: <https://github.com/christopherkenny/projector-themes>
 
 # Features
 
@@ -108,6 +124,17 @@ contents...
 
 ![](projector.png){width=3in fig-align="center"}
 
+## Code
+
+Include code with triple backticks:
+
+```r
+library(dplyr)
+
+starwars %>%
+  filter(species == "Droid")
+```
+
 ## Adding speaker notes
 
 Polylux uses pdfpc to store notes.
@@ -156,15 +183,69 @@ For a little less caution than an alert
 
 ## Using Typst functions
 
-explain here
+This template comes pre-equipped with a Quarto extension that converts divs and spans to function calls.
+To use any Typst functions, list them under the `functions` key in the YAML header.
 
+```yaml
+functions: align
+```
+Then you can use them like:
+
+```markdown
+::: {.align arguments="right"}
+this
+:::
+```
+
+or
+
+```markdown
+[other text]{.align arguments="right"}
+```
+
+For full documentation of this feature, see the [`typst-function` extension page](https://github.com/christopherkenny/typst-function).
 
 # Styling your slides
 
-## Fonts
+## YAML-controlled features
 
-## Colors
+Some features can be controlled via yaml options.
 
-## Footer
+:::{.nonincremental}
 
-## Code
+- `mainfont`: sets font (see options with `quarto typst fonts`)
+- `margin`: sets page margins
+- `papersize`: the paper size to use (choices listed [here](https://typst.app/docs/reference/layout/page/))
+- `toc`: whether to display the table of contents
+- `toc_title`: title of the table of contents
+- `background-image`: the path to an image to put as the background
+- `handout`: display as a handout, removing incrementals
+
+:::
+
+## Template files
+
+For additional customization, you can supply a template style file to use.
+
+This must contain a function `projector-theme` that contains your styling choices.
+That file will be imported before any of the YAML options, so those take precedence.
+
+To supply a template, add `theme: path_to_file.typ` to the YAML.
+
+
+## Controlling Title, ToC, and Sections Slides
+
+To modify these three particular slides, you need to adjust them in your template file.
+Simply redefine the functions that produce them with your own (pretty) version.
+
+The function signatures should be as follows:
+
+:::{.nonincremental}
+
+- `title-slide(title, subtitle, authors, date)`
+- `toc-slide(toc_title)`
+- `section-slide(name)`
+
+:::
+
+You do not need to use the arguments in the functions, but they must take those arguments or it will break.
