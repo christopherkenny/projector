@@ -91,12 +91,6 @@
   doc,
 ) = {
 
-  set page(
-    paper: paper,
-    margin: margin,
-    numbering: "1",
-  )
-
   show: it => {
     if theme != none {
       import theme: *
@@ -106,6 +100,12 @@
       it
     }
   }
+
+  set page(
+    paper: paper,
+    margin: margin,
+    numbering: "1",
+  )
 
   show: it => {
     if background != none {
