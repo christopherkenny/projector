@@ -39,19 +39,31 @@
 }
 
 #let toc-slide(toc_title) = {
-    polylux-slide[
-      #let title = if toc_title == none {
-        auto
-      } else {
-        toc_title
-      }
-      #heading(toc_title)
-      #set text(size: 2em)
-      // TODO 0.13 update to use new toolbox version
-      #align(horizon)[
-        #polylux-outline()
-      ]
+  polylux-slide[
+    #let title = if toc_title == none {
+      auto
+    } else {
+      toc_title
+    }
+    #heading(toc_title)
+    #set text(size: 2em)
+    // TODO 0.13 update to use new toolbox version
+    #align(horizon)[
+      #polylux-outline()
     ]
+  ]
+}
+
+// TODO 0.13 update to slide
+#let section-slide(name) = {
+  polylux-slide[
+    #set align(horizon)
+    #set text(size: 4em)
+    // TODO 0.13 update to #toolbox.register-section
+    #utils.register-section(name)
+
+    #strong(name)
+  ]
 }
 
 #let article(

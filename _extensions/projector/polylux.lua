@@ -51,7 +51,7 @@ function Header(el)
   if el.level == 1 then
     local title = pandoc.utils.stringify(el)
     table.insert(blocks, pandoc.RawBlock("typst", ""))
-    table.insert(blocks, pandoc.RawBlock("typst", '#projector-register-section("' .. title .. '")'))
+    table.insert(blocks, pandoc.RawBlock("typst", '#section-slide("' .. title .. '")'))
     return blocks
   elseif el.level == 2 then
     local title = pandoc.utils.stringify(el)

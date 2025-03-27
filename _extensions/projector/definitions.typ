@@ -174,18 +174,6 @@
     )
 }
 
-// Projector section slides
-
-// TODO 0.13 update to slide
-#let projector-register-section(name) = polylux-slide[
-  #set align(horizon)
-  #set text(size: 4em)
-  // TODO 0.13 update to #toolbox.register-section
-  #utils.register-section(name)
-
-  #strong(name)
-]
-
 // Shortcuts for callout types
 #let alert(title, body) = callout(
   title: title,
