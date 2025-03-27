@@ -38,6 +38,22 @@
   ]
 }
 
+#let toc-slide(toc_title) = {
+    polylux-slide[
+      #let title = if toc_title == none {
+        auto
+      } else {
+        toc_title
+      }
+      #heading(toc_title)
+      #set text(size: 2em)
+      // TODO 0.13 update to use new toolbox version
+      #align(horizon)[
+        #polylux-outline()
+      ]
+    ]
+}
+
 #let article(
   title: none,
   subtitle: none,
@@ -71,7 +87,7 @@
 
   show: it => {
     if theme != none {
-      import theme: projector-theme
+      import theme: *
       show: projector-theme
       it
     } else {
@@ -110,19 +126,7 @@
   }
 
   if toc {
-    polylux-slide[
-      #let title = if toc_title == none {
-        auto
-      } else {
-        toc_title
-      }
-      #heading(toc_title)
-      #set text(size: 2em)
-      // TODO 0.13 update to use new toolbox version
-      #align(horizon)[
-        #polylux-outline()
-      ]
-    ]
+    toc-slide(toc_title)
   }
 
   if cols == 1 {
