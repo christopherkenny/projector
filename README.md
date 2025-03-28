@@ -4,6 +4,9 @@
 A Quarto format for making slides with [polylux](https://github.com/andreasKroepelin/polylux).
 This template tries to replicate the Quarto-side syntax for [Beamer](https://quarto.org/docs/presentations/beamer.html), [PowerPoint](https://quarto.org/docs/presentations/powerpoint.html), and [Revealjs](https://quarto.org/docs/presentations/revealjs/) slides.
 
+<!-- pdftools::pdf_convert('template.pdf') -->
+![[template.qmd](template.qmd)](example.gif)
+
 ## Design principles
 
 In order of importance:
