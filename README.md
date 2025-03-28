@@ -30,12 +30,34 @@ This template includes several custom arguments that can be supplied in the YAML
 - `handout`: If `true`, the slides will be formatted for printing as a handout. Default: `false`.
 
 
+## Header options
+
+- `mainfont`: sets font (see options with `quarto typst fonts`)
+- `margin`: sets page margins
+- `papersize`: the paper size to use (choices listed [here](https://typst.app/docs/reference/layout/page/))
+- `toc`: whether to display the table of contents
+- `toc_title`: title of the table of contents
+- `background-image`: the path to an image to put as the background
+- `handout`: display as a handout, removing incrementals
+- `theme`: a file name containing your customizations
+
+## Controlling Title, ToC, and Sections Slides
+
+To modify these three particular slides, you need to adjust them in your template file.
+Simply redefine the functions that produce them with your own version.
+
+The function signatures should be as follows:
+
+- `title-slide(title, subtitle, authors, date)`
+- `toc-slide(toc_title)`
+- `section-slide(name)`
+
 ### Using other Typst functions
 
 This extension comes preloaded with my [`typst-function`](https://github.com/christopherkenny/typst-function) Quarto extension to make it easy to use bits of Typst for formatting.
 This feature is entirely optional, but may simplify making tweaks to your slides.
 
-Divs that match names listed in the `functions` key are translated to Typst functions of the same name.
+Divs and spans that match names listed in the `functions` key are translated to Typst functions of the same name.
 Adding this to your metadata:
 
 ```yaml
