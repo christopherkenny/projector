@@ -27,11 +27,6 @@ that you can use as a starting place for your slides.
 
 This template includes several custom arguments that can be supplied in the YAML header.
 
-- `handout`: If `true`, the slides will be formatted for printing as a handout. Default: `false`.
-
-
-## Header options
-
 - `mainfont`: sets font (see options with `quarto typst fonts`)
 - `margin`: sets page margins
 - `papersize`: the paper size to use (choices listed [here](https://typst.app/docs/reference/layout/page/))
