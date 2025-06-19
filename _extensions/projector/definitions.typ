@@ -289,10 +289,10 @@
 #let section-slide(name) = {
   slide[
     #align(horizon)[
-      #set text(size: 4em)
+      #text(size: 4em)[
+        #strong(name)
+      ]
       #toolbox.register-section(name)
-
-      #strong(name)
     ]
   ]
 }

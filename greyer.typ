@@ -16,8 +16,9 @@
 #import "@preview/polylux:0.4.0": *
 #let section-slide(name) = {
   slide[
-    #set text(size: 3em)
-    #name
+    #text(size: 3em)[
+      #name
+    ]
     #toolbox.register-section(name)
   ]
 }
