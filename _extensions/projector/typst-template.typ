@@ -1,3 +1,14 @@
+#let content-to-string(content) = {
+  if content.has("text") {
+    content.text
+  } else if content.has("children") {
+    content.children.map(content-to-string).join("")
+  } else if content.has("body") {
+    content-to-string(content.body)
+  } else if content == [ ] {
+    " "
+  }
+}
 
 #let article(
   title: none,
@@ -13,7 +24,13 @@
   region: "US",
   font: (),
   fontsize: 11pt,
+  mathfont: none,
+  codefont: none,
+  linestretch: 1,
   sectionnumbering: none,
+  linkcolor: none,
+  citecolor: none,
+  filecolor: none,
   toc: false,
   toc_title: none,
   toc_depth: none,
@@ -49,7 +66,10 @@
     }
   }
 
-  set par(justify: true)
+  set par(
+    justify: true,
+    leading: linestretch * 0.65em
+  )
 
   set text(
     lang: lang,
@@ -57,6 +77,16 @@
     font: font,
     size: fontsize,
   )
+  show math.equation: set text(font: mathfont) if mathfont != none
+  show raw: set text(font: codefont) if codefont != none
+
+  show link: set text(fill: rgb(content-to-string(linkcolor))) if linkcolor != none
+  show ref: set text(fill: rgb(content-to-string(citecolor))) if citecolor != none
+  show link: this => {
+    if filecolor != none and type(this.dest) == label {
+      text(this, fill: rgb(content-to-string(filecolor)))
+    }
+  }
 
   set heading(numbering: sectionnumbering)
   show heading: set text(size: 1.5em)

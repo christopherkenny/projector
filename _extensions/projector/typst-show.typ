@@ -42,8 +42,26 @@ $endif$
 $if(fontsize)$
   fontsize: $fontsize$,
 $endif$
+$if(mathfont)$
+  mathfont: ($for(mathfont)$"$mathfont$",$endfor$),
+$endif$
+$if(codefont)$
+  codefont: ($for(codefont)$"$codefont$",$endfor$),
+$endif$
+$if(linestretch)$
+  linestretch: $linestretch$,
+$endif$
 $if(section-numbering)$
   sectionnumbering: "$section-numbering$",
+$endif$
+$if(linkcolor)$
+  linkcolor: [$linkcolor$],
+$endif$
+$if(citecolor)$
+  citecolor: [$citecolor$],
+$endif$
+$if(filecolor)$
+  filecolor: [$filecolor$],
 $endif$
 $if(toc)$
   toc: $toc$,
