@@ -85,6 +85,8 @@
   show link: this => {
     if filecolor != none and type(this.dest) == label {
       text(this, fill: rgb(content-to-string(filecolor)))
+    } else {
+      this
     }
   }
 

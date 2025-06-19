@@ -3,7 +3,7 @@
 
 #let projector-theme(doc) = {
   // Set the default text and background colors
-  set text(stroke: grey-dark-gray)
+  set text(fill: grey-dark-gray)
   set page(fill: grey-gray)
   show heading: it => {
     it
