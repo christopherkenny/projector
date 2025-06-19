@@ -15,7 +15,7 @@ format:
 bullet-incremental: true
 toc: true
 handout: false
-theme: metropolis.typ
+theme: greyer.typ
 #background-image: projector.png
 ---
 
