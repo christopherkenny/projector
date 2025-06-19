@@ -18,7 +18,7 @@
   abstract: none,
   abstract-title: none,
   cols: 1,
-  margin: (x: 1in, y: 1in),
+  margin: (x: 0.5in, y: 0.5in),
   paper: "presentation-16-9",
   lang: "en",
   region: "US",
@@ -67,7 +67,7 @@
   }
 
   set par(
-    justify: true,
+    justify: false,
     leading: linestretch * 0.65em
   )
 
