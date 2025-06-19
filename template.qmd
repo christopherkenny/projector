@@ -1,5 +1,6 @@
 ---
 title: A presentation with Polylux via Quarto
+subtitle: using `projector`
 author:
   - name: Author One
     affiliations:
@@ -14,7 +15,10 @@ format:
 bullet-incremental: true
 toc: true
 handout: false
-theme: greyer.typ
+theme: metropolis.typ
+mainfont: Fira Sans
+fontsize: 16pt
+toc-title: "Agenda"
 #background-image: projector.png
 ---
 
@@ -96,11 +100,13 @@ Yes! It's possible with `---`.
 ::::  {.columns align=top .onlytextwidth}
 
 ::: {.column width="40%" align=center}
-contents left
+left column in 40% column
+center aligned
 :::
 
 ::: {.column width="60%"}
-contents right
+right column with 60% column
+right aligned
 :::
 
 ::::
@@ -140,6 +146,11 @@ starwars %>%
 Polylux uses pdfpc to store notes.
 You can create them via
 
+```
+:::{.notes}
+Adding this will create notes readable to the presenter in pdfpc.
+:::
+```
 :::{.notes}
 Adding this will create notes readable to the presenter in pdfpc.
 :::
@@ -228,7 +239,19 @@ Some features can be controlled via yaml options.
 For additional customization, you can supply a template style file to use.
 
 This must contain a function `projector-theme` that contains your styling choices.
-That file will be imported before any of the YAML options, so those take precedence.
+That file will be imported before any of the YAML options, so the YAML options take precedence.
+
+This should look like
+
+```typ
+#let projector-theme(doc) = {
+  // your styling choices
+  doc
+}
+
+```
+
+Omitting `doc` at the end will create a single, empty slide as your output.
 
 To supply a template, add `theme: path_to_file.typ` to the YAML.
 
