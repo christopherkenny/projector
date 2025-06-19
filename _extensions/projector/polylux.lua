@@ -220,6 +220,12 @@ function Div(el)
     return walked.content
   end
 
+  if el.classes:includes("notes") then
+    local content = pandoc.utils.stringify(el.content)
+    local note = string.format('#toolbox.pdfpc.speaker-note("%s")', content)
+    return pandoc.RawBlock("typst", note)
+  end
+
   return el
 end
 
