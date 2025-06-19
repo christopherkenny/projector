@@ -13,12 +13,11 @@
   doc
 }
 
-#import "@preview/polylux:0.3.1": *
+#import "@preview/polylux:0.4.0": *
 #let section-slide(name) = {
-  polylux-slide[
+  slide[
     #set text(size: 3em)
     #name
-    // TODO 0.13 update to #toolbox.register-section
-    #utils.register-section(name)
+    #toolbox.register-section(name)
   ]
 }

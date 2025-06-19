@@ -1,7 +1,7 @@
 title: projector
 author: Christopher T. Kenny
-version: 0.1.0
-quarto-required: ">=1.5.0"
+version: 0.2.0
+quarto-required: ">=1.7.22"
 contributes:
   formats:
     typst:
@@ -12,4 +12,3 @@ contributes:
       filters:
         - polylux.lua
       date-format: long
-

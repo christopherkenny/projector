@@ -56,7 +56,7 @@ function Header(el)
   elseif el.level == 2 then
     local title = pandoc.utils.stringify(el)
     table.insert(blocks, pandoc.RawBlock("typst", ""))
-    table.insert(blocks, pandoc.RawBlock("typst", "#polylux-slide["))
+    table.insert(blocks, pandoc.RawBlock("typst", "#slide["))
     table.insert(blocks, pandoc.RawBlock("typst", "= " .. title))
     in_slide = true
     return blocks
@@ -95,7 +95,7 @@ function HorizontalRule()
     table.insert(blocks, pandoc.RawBlock("typst", ""))
   end
   table.insert(blocks, pandoc.RawBlock("typst", ""))
-  table.insert(blocks, pandoc.RawBlock("typst", "#polylux-slide["))
+  table.insert(blocks, pandoc.RawBlock("typst", "#slide["))
   in_slide = true
   return blocks
 end
@@ -107,7 +107,7 @@ function Para(el)
   end
   local text = pandoc.utils.stringify(el)
   if in_slide and text:match("^%. ?%. ?%.$") then
-    return pandoc.RawBlock("typst", "#pause")
+    return pandoc.RawBlock("typst", "#show: later")
   end
   return el
 end
@@ -121,7 +121,7 @@ function BulletList(el)
     local rendered = pandoc.write(pandoc.Pandoc({ el }), "markdown")
     rendered = rendered:gsub("%s+$", "")
     return {
-      pandoc.RawBlock("typst", "#line-by-line["),
+      pandoc.RawBlock("typst", "#item-by-item["),
       pandoc.RawBlock("typst", rendered),
       pandoc.RawBlock("typst", "]")
     }
@@ -139,7 +139,7 @@ function OrderedList(el)
     local rendered = pandoc.write(pandoc.Pandoc({ el }), "markdown")
     rendered = rendered:gsub("%s+$", "")
     return {
-      pandoc.RawBlock("typst", "#line-by-line["),
+      pandoc.RawBlock("typst", "#item-by-item["),
       pandoc.RawBlock("typst", rendered),
       pandoc.RawBlock("typst", "]")
     }
@@ -229,7 +229,7 @@ function finalize(doc)
 
   if show_toc then
     local toc_slide = {
-      pandoc.RawBlock("typst", "#polylux-slide["),
+      pandoc.RawBlock("typst", "#slide["),
       pandoc.RawBlock("typst", "= Outline"),
       pandoc.RawBlock("typst", "#outline"),
       pandoc.RawBlock("typst", "]")
