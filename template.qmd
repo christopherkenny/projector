@@ -16,9 +16,6 @@ bullet-incremental: true
 toc: true
 handout: false
 theme: metropolis.typ
-mainfont: Fira Sans
-fontsize: 16pt
-toc-title: "Agenda"
 #background-image: projector.png
 ---
 
