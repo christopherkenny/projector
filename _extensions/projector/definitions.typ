@@ -175,50 +175,50 @@
 }
 
 // Shortcuts for callout types
-#let alert(title, body) = callout(
+#let alert(title, body, fill: red) = callout(
   title: title,
   body: body,
-  background_color: red,
+  background_color: fill,
   icon: fa-icon("triangle-exclamation"),
   icon_color: white
 )
 
-#let example(title, body) = callout(
+#let example(title, body, fill: rgb("e5f5ff")) = callout(
   title: title,
   body: body,
-  background_color: rgb("e5f5ff"),
+  background_color: fill,
   icon: fa-icon("lightbulb"),
   icon_color: blue
 )
 
-#let tip(title, body) = callout(
+#let tip(title, body, fill: rgb("d2f4d2")) = callout(
   title: title,
   body: body,
-  background_color: rgb("d2f4d2"),
+  background_color: fill,
   icon: fa-icon("circle-check"),
   icon_color: green
 )
 
-#let reminder(title, body) = callout(
+#let reminder(title, body, fill: rgb("f5f5dc")) = callout(
   title: title,
   body: body,
-  background_color: rgb("f5f5dc"),
+  background_color: fill,
   icon: fa-icon("sticky-note"),
   icon_color: black
 )
 
-#let info(title, body) = callout(
+#let info(title, body, fill: rgb("e0f0ff")) = callout(
   title: title,
   body: body,
-  background_color: rgb("e0f0ff"),
+  background_color: fill,
   icon: fa-icon("circle-info"),
   icon_color: blue
 )
 
-#let warning(title, body) = callout(
+#let warning(title, body, fill: orange) = callout(
   title: title,
   body: body,
-  background_color: orange,
+  background_color: fill,
   icon: fa-icon("triangle-exclamation"),
   icon_color: white
 )
