@@ -300,3 +300,9 @@
 $if(theme)$
 #import "$theme$": *
 $endif$
+
+$if(projector)$
+$for(projector/pairs)$
+#let $it.key$ = "$it.value$"
+$endfor$
+$endif$
