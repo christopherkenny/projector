@@ -228,6 +228,9 @@
   body: body
 )
 
+#let focus-slide = slide
+#let last-slide = slide
+
 #let title-slide(title, subtitle, authors, date) = {
   slide[
     #if title != none {

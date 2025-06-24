@@ -37,7 +37,6 @@ local function flush_callout()
   return blocks
 end
 
--- Header, HorizontalRule, Para, BulletList, Div functions unchanged...
 function Header(el)
   local blocks = {}
   for _, b in ipairs(flush_callout()) do
@@ -55,8 +54,16 @@ function Header(el)
     return blocks
   elseif el.level == 2 then
     local title = pandoc.utils.stringify(el)
+    local macro = "slide"
+    local slide_types = { focus = true, last = true }
+    for _, cls in ipairs(el.classes) do
+      if slide_types[cls] then
+        macro = cls .. "-slide"
+        break
+      end
+    end
     table.insert(blocks, pandoc.RawBlock("typst", ""))
-    table.insert(blocks, pandoc.RawBlock("typst", "#slide["))
+    table.insert(blocks, pandoc.RawBlock("typst", "#" .. macro .. "["))
     table.insert(blocks, pandoc.RawBlock("typst", "= " .. title))
     in_slide = true
     return blocks
