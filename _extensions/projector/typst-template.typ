@@ -22,7 +22,7 @@
   paper: "presentation-16-9",
   lang: "en",
   region: "US",
-  font: (),
+  font: none,
   fontsize: 11pt,
   mathfont: none,
   codefont: none,
@@ -74,9 +74,9 @@
   set text(
     lang: lang,
     region: region,
-    font: font,
     size: fontsize,
   )
+  set text(font: font) if font != none
   show math.equation: set text(font: mathfont) if mathfont != none
   show raw: set text(font: codefont) if codefont != none
 

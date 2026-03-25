@@ -11,7 +11,7 @@ author:
 date: today
 format:
   projector-typst:
-    keep-typ: true
+    keep-typ: false
 bullet-incremental: true
 toc: true
 handout: false

@@ -229,6 +229,8 @@ function Div(el)
 
   if el.classes:includes("notes") then
     local content = pandoc.utils.stringify(el.content)
+    content = content:gsub("\\", "\\\\")
+    content = content:gsub('"', '\\"')
     local note = string.format('#toolbox.pdfpc.speaker-note("%s")', content)
     return pandoc.RawBlock("typst", note)
   end

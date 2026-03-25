@@ -1,4 +1,10 @@
 
+$if(highlighting-definitions)$
+// syntax highlighting functions from skylighting:
+$highlighting-definitions$
+
+$endif$
+
 #show: doc => article(
 $if(title)$
   title: [$title$],
