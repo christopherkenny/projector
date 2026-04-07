@@ -7,6 +7,8 @@ local global_incremental = false
 local in_incremental_div = false
 local in_nonincremental_div = false
 local show_toc = false
+-- Toggle this manually if you want `.notes` blocks exported as pdfpc notes.
+local include_pdfpc_notes = false
 
 function Meta(meta)
   if meta["bullet-incremental"] == true then
@@ -228,6 +230,10 @@ function Div(el)
   end
 
   if el.classes:includes("notes") then
+    if not include_pdfpc_notes then
+      return {}
+    end
+
     local content = pandoc.utils.stringify(el.content)
     content = content:gsub("\\", "\\\\")
     content = content:gsub('"', '\\"')

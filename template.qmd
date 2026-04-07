@@ -141,6 +141,7 @@ starwars %>%
 ## Adding speaker notes
 
 Polylux uses pdfpc to store notes.
+Speaker notes are temporarily disabled pending upstream fixes for Typst 0.14.
 You can create them via
 
 ```
