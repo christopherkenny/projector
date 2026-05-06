@@ -12,3 +12,4 @@ contributes:
       filters:
         - polylux.lua
       date-format: long
+      syntax-highlighting: idiomatic

@@ -54,7 +54,8 @@
   set page(
     paper: paper,
     margin: margin,
-    numbering: "1",
+    numbering: none,
+    footer: context align(center)[#toolbox.slide-number],
   )
 
   show: it => {
