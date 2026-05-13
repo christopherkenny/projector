@@ -215,7 +215,7 @@ function Div(el)
     in_incremental_div = true
     local walked = pandoc.walk_block(el, {
       BulletList = BulletList,
-      OrderedList = OrderedList -- ✅ Add this
+      OrderedList = OrderedList
     })
     in_incremental_div = false
     return walked.content
@@ -223,7 +223,7 @@ function Div(el)
     in_nonincremental_div = true
     local walked = pandoc.walk_block(el, {
       BulletList = BulletList,
-      OrderedList = OrderedList -- ✅ Add this
+      OrderedList = OrderedList
     })
     in_nonincremental_div = false
     return walked.content
