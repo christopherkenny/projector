@@ -1,7 +1,7 @@
 
 # `projector` Format <img src='projector.png' align="right" height="150" />
 
-A Quarto format for making slides with [polylux](https://github.com/andreasKroepelin/polylux).
+A Quarto format for making Typst slides with [Polylux](https://github.com/andreasKroepelin/polylux) or [Touying](https://github.com/touying-typ/touying).
 This template tries to replicate the Quarto-side syntax for [Beamer](https://quarto.org/docs/presentations/beamer.html), [PowerPoint](https://quarto.org/docs/presentations/powerpoint.html), and [Revealjs](https://quarto.org/docs/presentations/revealjs/) slides.
 
 <!-- pdftools::pdf_convert('template.pdf') -->
@@ -13,7 +13,7 @@ In order of importance:
 
 1. Replicate the syntax of existing Quarto beamer slides so that `projector` can be used as a drop-in extension for the beamer type, up to any additional LaTeX-specific styling.
 
-2. Incorporate `polylux` features automatically, so that functions like `#slide` or `#toolbox.register-section` never need to be modified directly, but are fully controlled by regular Quarto features.
+2. Support multiple Typst slide backends without changing the Quarto-facing syntax.
 
 3. Minimize nonstandard defaults. By setting as few features up automatically as possible, this should be customizeable using a header `.typ` file. When an option would be hard to control otherwise, it should be controlled via a YAML option in the Quarto doc.
 
@@ -26,7 +26,7 @@ quarto use template christopherkenny/projector
 This will install the format extension and create an example `.qmd` file
 that you can use as a starting place for your slides.
 
-## Using `projector` to make Polylux slides
+## Using `projector` to make slides
 
 This template includes several custom arguments that can be supplied in the YAML header.
 
@@ -38,6 +38,8 @@ This template includes several custom arguments that can be supplied in the YAML
 - `background-image`: the path to an image to put as the background
 - `handout`: display as a handout, removing incrementals
 - `theme`: a file name containing your customizations
+- `backend`: the slide backend to use (`polylux` is the default; `touying` is also supported)
+- `touying-theme`: an optional built-in theme for Touying
 
 ## Controlling Title, ToC, and Sections Slides
 

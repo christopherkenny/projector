@@ -10,6 +10,7 @@ contributes:
         - typst-show.typ
         - definitions.typ
       filters:
-        - polylux.lua
+        - slides.lua
+      backend: polylux
       date-format: long
       syntax-highlighting: idiomatic

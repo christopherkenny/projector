@@ -55,7 +55,7 @@
     paper: paper,
     margin: margin,
     numbering: none,
-    footer: context align(center)[#toolbox.slide-number],
+    footer: context align(center)[#slide-number()],
   )
 
   show: it => {
@@ -95,23 +95,34 @@
   show heading: set text(size: 1.5em)
   set text(size: 1.25em)
 
-  if handout {
-    enable-handout-mode(true)
+  backend-setup(handout)
+
+  let body = {
+    if title != none or authors != none or date != none {
+      title-slide(title, subtitle, authors, date)
+    }
+
+    if toc {
+      toc-slide(toc_title)
+    }
+
+    if cols == 1 {
+      doc
+    } else {
+      columns(cols, doc)
+    }
   }
 
-  if title != none or authors != none or date != none {
-    title-slide(title, subtitle, authors, date)
-  }
-
-  if toc {
-    toc-slide(toc_title)
-  }
-
-  if cols == 1 {
-    doc
-  } else {
-    columns(cols, doc)
-  }
+  backend-apply(
+    body,
+    paper,
+    margin,
+    handout: handout,
+    title: title,
+    subtitle: subtitle,
+    authors: authors,
+    date: date,
+  )
 }
 
 #set table(

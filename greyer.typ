@@ -9,7 +9,6 @@
     it
     v(1em)
   }
-  set box(stroke: black, outset: 2em)
   doc
 }
 

@@ -1,0 +1,4 @@
+[package]
+name = "projector"
+version = "0.2.0"
+entrypoint = "lib.typ"

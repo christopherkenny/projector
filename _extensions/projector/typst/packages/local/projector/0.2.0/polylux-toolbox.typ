@@ -1,0 +1,14 @@
+#import "@preview/polylux:0.4.0" as polylux
+#import "pdfpc.typ" as pdfpc_module
+
+#let register-section = polylux.toolbox.register-section
+#let current-section = polylux.toolbox.current-section
+#let all-sections = polylux.toolbox.all-sections
+#let progress-ratio = polylux.toolbox.progress-ratio
+#let last-slide-number = polylux.toolbox.last-slide-number
+#let slide-number = polylux.toolbox.slide-number
+#let big = polylux.toolbox.big
+#let side-by-side = polylux.toolbox.side-by-side
+#let full-width-block = polylux.toolbox.full-width-block
+#let next-heading = polylux.toolbox.next-heading
+#let pdfpc = pdfpc_module

@@ -1,5 +1,5 @@
 ---
-title: A presentation with Polylux via Quarto
+title: A presentation with projector via Quarto
 subtitle: using `projector`
 author:
   - name: Author One
@@ -12,6 +12,8 @@ date: today
 format:
   projector-typst:
     keep-typ: false
+    backend: touying
+    # touying-theme: simple
 bullet-incremental: true
 toc: true
 handout: false
@@ -23,7 +25,7 @@ theme: greyer.typ
 
 ## Introduction
 
-`projector` is a [Quarto](https://quarto.org/) extension to create [Polylux](https://github.com/polylux-typ/polylux) presentations in [Typst](https://typst.app/) while only writing [Markdown](https://daringfireball.net/projects/markdown/).
+`projector` is a [Quarto](https://quarto.org/) extension to create Typst presentations with interchangeable slide backends while only writing [Markdown](https://daringfireball.net/projects/markdown/).
 
 It is designed to mimic all of the properties of beamer so that you can (hopefully) convert just by:
 
@@ -134,7 +136,7 @@ Include code with triple backticks:
 ```r
 library(dplyr)
 
-starwars %>%
+starwars |>
   filter(species == "Droid")
 ```
 
@@ -229,6 +231,8 @@ Some features can be controlled via yaml options.
 - `toc_title`: title of the table of contents
 - `background-image`: the path to an image to put as the background
 - `handout`: display as a handout, removing incrementals
+- `backend`: the slide backend; `polylux` is the default
+- `touying-theme`: the built-in Touying theme to use when `backend: touying`
 
 :::
 
@@ -236,8 +240,12 @@ Some features can be controlled via yaml options.
 
 For additional customization, you can supply a template style file to use.
 
-This must contain a function `projector-theme` that contains your styling choices.
-That file will be imported before any of the YAML options, so the YAML options take precedence.
+The file is imported as an ordinary Typst module, so relative imports inside the
+theme continue to resolve relative to the theme file. It can define
+`projector-theme(doc)` for styling and the existing `title-slide`, `toc-slide`,
+and `section-slide` hooks for custom slides. These hook names remain the
+override points for every backend; when Touying is selected, projector wraps
+the returned legacy slide body in Touying's slide function.
 
 This should look like
 
