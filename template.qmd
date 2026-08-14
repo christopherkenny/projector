@@ -1,5 +1,5 @@
 ---
-title: A presentation with projector via Quarto
+title: A presentation in Typst via Quarto
 subtitle: using `projector`
 author:
   - name: Author One
@@ -12,7 +12,7 @@ date: today
 format:
   projector-typst:
     keep-typ: false
-    backend: touying
+    #backend: touying
     # touying-theme: simple
 bullet-incremental: true
 toc: true

@@ -14,5 +14,41 @@
 #let setup(handout: false) = {
   if handout { polylux.enable-handout-mode(true) }
 }
-#let apply(body, ..args) = body
 #let section-heading(name) = none
+
+#let default-toc-slide(api, toc_title) = (api.slide)[
+  #let title = if toc_title == none { "Outline" } else { toc_title }
+  #heading(title)
+  #set text(size: 2em)
+  #align(horizon)[
+    #(api.toolbox.all-sections)((sections, current) => {
+      sections
+        .map(s => if s == current { emph(s) } else { s })
+        .join([ #linebreak() ])
+    })
+  ]
+]
+
+#let default-section-slide(api, name) = (api.slide)[
+  #align(horizon)[
+    #text(size: 4em)[#strong(name)]
+    #(api.toolbox.register-section)(name)
+  ]
+]
+
+#let configure(theme: "none") = (
+  toolbox: toolbox,
+  slide: slide,
+  focus-slide: focus-slide,
+  last-slide: last-slide,
+  pause: pause,
+  item-by-item: item-by-item,
+  slide-number: slide-number,
+  later: later,
+  speaker-note: speaker-note,
+  setup: setup,
+  apply: (body, paper: "presentation-16-9", margin: (x: 0.5in, y: 0.5in), handout: false, title: none, subtitle: none, authors: none, date: none) => body,
+  section-heading: section-heading,
+  default-toc-slide: default-toc-slide,
+  default-section-slide: default-section-slide,
+)

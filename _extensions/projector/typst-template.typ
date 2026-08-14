@@ -111,8 +111,8 @@
 
   backend-apply(
     body,
-    paper,
-    margin,
+    paper: paper,
+    margin: margin,
     handout: handout,
     title: title,
     subtitle: subtitle,

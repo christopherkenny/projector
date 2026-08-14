@@ -6,6 +6,7 @@ local backends = {
   polylux = {
   },
   touying = {
+    theme_key = "touying-theme",
     default_theme = "simple",
   },
 }
@@ -77,13 +78,18 @@ function Meta(meta)
   if backend ~= "touying" and meta["touying-theme"] ~= nil then
     error("touying-theme is only supported by the 'touying' backend")
   end
-  if backend_spec.default_theme ~= nil and meta["touying-theme"] == nil then
-    meta["touying-theme"] = pandoc.MetaString(backend_spec.default_theme)
+  if backend_spec.theme_key ~= nil then
+    if meta[backend_spec.theme_key] == nil and backend_spec.default_theme ~= nil then
+      meta[backend_spec.theme_key] = pandoc.MetaString(backend_spec.default_theme)
+    end
+    if meta[backend_spec.theme_key] ~= nil then
+      meta["projector_backend_theme"] = pandoc.MetaString(
+        pandoc.utils.stringify(meta[backend_spec.theme_key])
+      )
+    end
   end
 
   meta["backend"] = pandoc.MetaString(backend)
-  meta["projector_backend_touying"] = pandoc.MetaBool(backend == "touying")
-  meta["projector_backend_polylux"] = pandoc.MetaBool(backend == "polylux")
 
   global_incremental = meta["bullet-incremental"] == true
   pending_callout = nil

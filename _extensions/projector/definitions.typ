@@ -1,41 +1,21 @@
 #import "@local/projector:0.2.0": load-backend
 #import "@preview/fontawesome:0.5.0": *
 
-#let backend = "$if(backend)$$backend$$else$polylux$endif$"
-#let backend-module = load-backend(backend)
-#let toolbox = backend-module.toolbox
-#let slide = backend-module.slide
-#let focus-slide = backend-module.focus-slide
-#let last-slide = backend-module.last-slide
-#let pause = backend-module.pause
-#let item-by-item = backend-module.item-by-item
-#let slide-number = backend-module.slide-number
-#let later = backend-module.later
-#let speaker-note = backend-module.speaker-note
-#let backend-section-heading = backend-module.section-heading
+#let backend-name = "$if(backend)$$backend$$else$polylux$endif$"
+#let backend-module = load-backend(backend-name)
+#let backend-theme = "$if(projector_backend_theme)$$projector_backend_theme$$else$none$endif$"
+#let backend = backend-module.configure(theme: backend-theme)
+#let toolbox = backend.toolbox
+#let slide = backend.slide
+#let focus-slide = backend.focus-slide
+#let last-slide = backend.last-slide
+#let pause = backend.pause
+#let item-by-item = backend.item-by-item
+#let slide-number = backend.slide-number
+#let later = backend.later
+#let speaker-note = backend.speaker-note
+#let backend-section-heading = backend.section-heading
 #let projector-pause = pause
-#let touying-theme = it => it
-#let touying-slide-base = slide
-
-$if(projector_backend_touying)$
-#import "@preview/touying:0.7.4" as touying-pkg
-$if(touying-theme)$
-#import touying-pkg.themes.$touying-theme$ as touying-theme-module
-#import touying-pkg.themes.$touying-theme$: $touying-theme$-theme as touying-theme
-#let touying-slide-base = touying-theme-module.slide
-#let slide = touying-slide-base
-#let focus-slide = if "focus-slide" in touying-theme-module {
-  touying-theme-module.focus-slide
-} else {
-  slide
-}
-#let last-slide = slide
-$else$
-#let touying-theme = touying-pkg.touying-slides
-$endif$
-$else$
-#let touying-theme = it => it
-$endif$
 
 // Some definitions presupposed by pandoc's typst output.
 #let blockquote(body) = [
@@ -270,10 +250,10 @@ $endif$
   last-slide: last-slide,
   pause: pause,
   item-by-item: item-by-item,
+  slide-number: slide-number,
+  later: later,
+  speaker-note: speaker-note,
   toolbox: toolbox,
-  section-heading: backend-section-heading,
-  setup: backend-module.setup,
-  apply: backend-module.apply,
 )
 
 #let projector-default-title-slide(api, title, subtitle, authors, date) = {
@@ -313,53 +293,8 @@ $endif$
   ]
 }
 
-#let projector-touying-outline(api) = context {
-  (api.toolbox.all-sections)((sections, current) => {
-    sections.join(linebreak())
-  })
-}
-
-#let projector-default-toc-slide(api, toc_title) = if backend == "touying" {
-  (api.slide)[
-    #let title = if toc_title == none { "Outline" } else { toc_title }
-    #heading(outlined: false, title)
-    #set text(size: 2em)
-    #projector-touying-outline(api)
-  ]
-} else {
-  (api.slide)[
-    #let title = if toc_title == none { "Outline" } else { toc_title }
-    #heading(title)
-    #set text(size: 2em)
-    #align(horizon)[
-      #(api.toolbox.all-sections)((sections, current) => {
-        sections
-          .map(s => if s == current { emph(s) } else { s })
-          .join([ #linebreak() ])
-      })
-    ]
-  ]
-}
-
-#let projector-touying-section-slide(api, name, body) = (api.slide)(
-  config: touying-pkg.config-page(header: [#name]),
-  body,
-)
-#let projector-default-section-slide(api, name) = if backend == "touying" {
-  projector-touying-section-slide(api, name, [
-    #align(horizon)[
-      #text(size: 4em)[#strong(name)]
-      #(api.toolbox.register-section)(name)
-    ]
-  ])
-} else {
-  (api.slide)[
-    #align(horizon)[
-      #text(size: 4em)[#strong(name)]
-      #(api.toolbox.register-section)(name)
-    ]
-  ]
-}
+#let projector-default-toc-slide(api, toc_title) = (backend.default-toc-slide)(api, toc_title)
+#let projector-default-section-slide(api, name) = (backend.default-section-slide)(api, name)
 
 $if(theme)$
 #import "$theme$" as projector-theme-module
@@ -390,19 +325,8 @@ $else$
 #let section-slide = projector-default-section-slide
 $endif$
 
-#let backend-setup = backend-module.setup
-#let backend-apply = (body, paper, margin, handout: false, title: none, subtitle: none, authors: none, date: none) => backend-module.apply(
-  body,
-  slide-fn: slide,
-  theme: touying-theme,
-  paper: paper,
-  margin: margin,
-  handout: handout,
-  title: title,
-  subtitle: subtitle,
-  authors: authors,
-  date: date,
-)
+#let backend-setup = backend.setup
+#let backend-apply = backend.apply
 
 $if(projector)$
 $for(projector/pairs)$
