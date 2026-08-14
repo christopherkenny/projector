@@ -8,7 +8,9 @@
 #let pause = touying.pause
 #let item-by-item = touying.item-by-item
 #let slide-number() = context touying.utils.slide-counter.display()
-#let later = (..args) => none
+#let later = (..args) => panic(
+  "projector: `later` is Polylux-specific and unavailable with the Touying backend; use `pause` for a backend-neutral reveal break"
+)
 #let speaker-note = toolbox.pdfpc.speaker-note
 #let section-heading(name) = none
 
@@ -89,7 +91,6 @@
           new-section-slide-fn: none,
           slide-fn: slide,
         ),
-        touying.config-methods(init: (self: none, body) => body),
         touying.config-info(
           title: title,
           subtitle: subtitle,
