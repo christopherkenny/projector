@@ -242,15 +242,15 @@ For additional customization, you can supply a template style file to use.
 
 The file is imported as an ordinary Typst module, so relative imports inside the
 theme continue to resolve relative to the theme file. It can define
-`projector-theme(doc)` for styling and the existing `title-slide`, `toc-slide`,
-and `section-slide` hooks for custom slides. These hook names remain the
-override points for every backend; when Touying is selected, projector wraps
-the returned legacy slide body in Touying's slide function.
+`projector-theme(api, doc)` for styling and the existing `title-slide`, `toc-slide`,
+and `section-slide` hooks for custom slides. The `api` record is backend-neutral
+and exposes the selected backend's slide functions, incremental functions, and
+toolbox. These hook names remain the override points for every backend.
 
 This should look like
 
 ```typ
-#let projector-theme(doc) = {
+#let projector-theme(api, doc) = {
   // your styling choices
   doc
 }
@@ -271,9 +271,9 @@ The function signatures should be as follows:
 
 :::{.nonincremental}
 
-- `title-slide(title, subtitle, authors, date)`
-- `toc-slide(toc_title)`
-- `section-slide(name)`
+- `title-slide(api, title, subtitle, authors, date)`
+- `toc-slide(api, toc_title)`
+- `section-slide(api, name)`
 
 :::
 

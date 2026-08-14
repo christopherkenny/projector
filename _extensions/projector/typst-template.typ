@@ -41,14 +41,10 @@
   doc,
 ) = {
 
-  show: it => {
-    if theme != none {
-      //import theme: *
-      show: projector-theme
-      it
-    } else {
-      it
-    }
+  show: it => if theme != none {
+    projector-theme(theme-api, it)
+  } else {
+    it
   }
 
   set page(
@@ -95,15 +91,15 @@
   show heading: set text(size: 1.5em)
   set text(size: 1.25em)
 
-  backend-setup(handout)
+  backend-setup(handout: handout)
 
   let body = {
     if title != none or authors != none or date != none {
-      title-slide(title, subtitle, authors, date)
+      title-slide(theme-api, title, subtitle, authors, date)
     }
 
     if toc {
-      toc-slide(toc_title)
+      toc-slide(theme-api, toc_title)
     }
 
     if cols == 1 {

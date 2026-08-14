@@ -4,10 +4,8 @@
 
 local backends = {
   polylux = {
-    pause = "#show: later",
   },
   touying = {
-    pause = "#pause",
     default_theme = "simple",
   },
 }
@@ -83,6 +81,10 @@ function Meta(meta)
     meta["touying-theme"] = pandoc.MetaString(backend_spec.default_theme)
   end
 
+  meta["backend"] = pandoc.MetaString(backend)
+  meta["projector_backend_touying"] = pandoc.MetaBool(backend == "touying")
+  meta["projector_backend_polylux"] = pandoc.MetaBool(backend == "polylux")
+
   global_incremental = meta["bullet-incremental"] == true
   pending_callout = nil
   buffered_blocks = {}
@@ -100,10 +102,14 @@ function Header(el)
   end
 
   if el.level == 1 then
+    table.insert(
+      blocks,
+      pandoc.RawBlock("typst", "#backend-section-heading(" .. typst_string(pandoc.utils.stringify(el)) .. ")")
+    )
     table.insert(blocks, pandoc.RawBlock("typst", ""))
     table.insert(
       blocks,
-      pandoc.RawBlock("typst", "#section-slide(" .. typst_string(pandoc.utils.stringify(el)) .. ")")
+      pandoc.RawBlock("typst", "#section-slide(theme-api, " .. typst_string(pandoc.utils.stringify(el)) .. ")")
     )
     return blocks
   elseif el.level == 2 then
@@ -169,7 +175,7 @@ function Para(el)
 
   local text = pandoc.utils.stringify(el)
   if in_slide and (text:match("^%. ?%. ?%.$") or text == "…") then
-    return pandoc.RawBlock("typst", backend_spec.pause)
+    return pandoc.RawBlock("typst", "#projector-pause")
   end
   return el
 end

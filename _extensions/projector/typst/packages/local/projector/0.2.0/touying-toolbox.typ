@@ -1,5 +1,5 @@
 #import "@preview/touying:0.7.4" as touying
-#import "pdfpc.typ" as pdfpc_module
+#import "pdfpc-core.typ" as pdfpc_module
 
 #let sections-state = state("projector-touying-sections", ())
 
@@ -88,4 +88,20 @@
   }
 }
 
-#let pdfpc = pdfpc_module
+#let pdfpc = (
+  speaker-note: pdfpc_module.speaker-note,
+  config: pdfpc_module.config,
+)
+#let toolbox = (
+  register-section: register-section,
+  current-section: current-section,
+  all-sections: all-sections,
+  progress-ratio: progress-ratio,
+  last-slide-number: last-slide-number,
+  slide-number: slide-number,
+  big: big,
+  side-by-side: side-by-side,
+  full-width-block: full-width-block,
+  next-heading: next-heading,
+  pdfpc: pdfpc,
+)

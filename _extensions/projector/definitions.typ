@@ -1,22 +1,40 @@
-#import "@preview/polylux:0.4.0" as polylux-pkg
-#import "@preview/touying:0.7.4" as touying-pkg
-#import "@local/projector:0.2.0": polylux-toolbox-module, touying-toolbox-module
+#import "@local/projector:0.2.0": load-backend
 #import "@preview/fontawesome:0.5.0": *
 
 #let backend = "$if(backend)$$backend$$else$polylux$endif$"
-#let touying-slide-base = touying-pkg.slide
-#let touying-focus-slide-base = touying-slide-base
+#let backend-module = load-backend(backend)
+#let toolbox = backend-module.toolbox
+#let slide = backend-module.slide
+#let focus-slide = backend-module.focus-slide
+#let last-slide = backend-module.last-slide
+#let pause = backend-module.pause
+#let item-by-item = backend-module.item-by-item
+#let slide-number = backend-module.slide-number
+#let later = backend-module.later
+#let speaker-note = backend-module.speaker-note
+#let backend-section-heading = backend-module.section-heading
+#let projector-pause = pause
 #let touying-theme = it => it
+#let touying-slide-base = slide
 
+$if(projector_backend_touying)$
+#import "@preview/touying:0.7.4" as touying-pkg
 $if(touying-theme)$
 #import touying-pkg.themes.$touying-theme$ as touying-theme-module
+#import touying-pkg.themes.$touying-theme$: $touying-theme$-theme as touying-theme
 #let touying-slide-base = touying-theme-module.slide
-#let touying-focus-slide-base = if "focus-slide" in touying-theme-module {
+#let slide = touying-slide-base
+#let focus-slide = if "focus-slide" in touying-theme-module {
   touying-theme-module.focus-slide
 } else {
-  touying-slide-base
+  slide
 }
-#import touying-pkg.themes.$touying-theme$: $touying-theme$-theme as touying-theme
+#let last-slide = slide
+$else$
+#let touying-theme = touying-pkg.touying-slides
+$endif$
+$else$
+#let touying-theme = it => it
 $endif$
 
 // Some definitions presupposed by pandoc's typst output.
@@ -246,77 +264,20 @@ $endif$
   body: body
 )
 
-#let touying-author-content(authors) = {
-  if authors == none or authors == [] {
-    none
-  } else {
-    authors
-      .map(author => {
-        let affiliation = author.at("affiliation", default: none)
-        if affiliation == none or affiliation == [ ] {
-          author.name
-        } else {
-          [#author.name, #h(0.5em) #affiliation]
-        }
-      })
-      .join([, ])
-  }
-}
+#let theme-api = (
+  slide: slide,
+  focus-slide: focus-slide,
+  last-slide: last-slide,
+  pause: pause,
+  item-by-item: item-by-item,
+  toolbox: toolbox,
+  section-heading: backend-section-heading,
+  setup: backend-module.setup,
+  apply: backend-module.apply,
+)
 
-#let polylux-slide = polylux-pkg.slide
-#let polylux-focus-slide = polylux-slide
-#let polylux-last-slide = polylux-slide
-
-#let touying-slide = touying-slide-base
-#let touying-focus-slide = touying-focus-slide-base
-#let touying-last-slide = touying-slide
-
-#let toolbox = if backend == "touying" {
-  touying-toolbox-module
-} else {
-  polylux-toolbox-module
-}
-#let slide = if backend == "touying" {
-  touying-slide
-} else {
-  polylux-slide
-}
-#let focus-slide = if backend == "touying" {
-  touying-focus-slide
-} else {
-  polylux-focus-slide
-}
-#let last-slide = if backend == "touying" {
-  touying-last-slide
-} else {
-  polylux-last-slide
-}
-#let polylux-slide-number() = polylux-toolbox-module.slide-number
-#let touying-slide-number() = touying-pkg.utils.slide-counter.display()
-#let slide-number = if backend == "touying" {
-  touying-slide-number
-} else {
-  polylux-slide-number
-}
-#let item-by-item = if backend == "touying" {
-  touying-pkg.item-by-item
-} else {
-  polylux-pkg.item-by-item
-}
-#let pause = if backend == "touying" {
-  touying-pkg.pause
-} else {
-  (..args) => none
-}
-#let later = if backend == "touying" {
-  (..args) => none
-} else {
-  polylux-pkg.later
-}
-#let speaker-note = toolbox.pdfpc.speaker-note
-
-#let projector-default-title-slide(title, subtitle, authors, date) = {
-  slide[
+#let projector-default-title-slide(api, title, subtitle, authors, date) = {
+  (api.slide)[
     #if title != none {
       align(center)[
         #block(inset: 1em)[
@@ -352,26 +313,26 @@ $endif$
   ]
 }
 
-#let projector-touying-outline = context {
-  toolbox.all-sections((sections, current) => {
+#let projector-touying-outline(api) = context {
+  (api.toolbox.all-sections)((sections, current) => {
     sections.join(linebreak())
   })
 }
 
-#let projector-default-toc-slide(toc_title) = if backend == "touying" {
-  slide[
+#let projector-default-toc-slide(api, toc_title) = if backend == "touying" {
+  (api.slide)[
     #let title = if toc_title == none { "Outline" } else { toc_title }
     #heading(outlined: false, title)
     #set text(size: 2em)
-    #projector-touying-outline
+    #projector-touying-outline(api)
   ]
 } else {
-  slide[
+  (api.slide)[
     #let title = if toc_title == none { "Outline" } else { toc_title }
     #heading(title)
     #set text(size: 2em)
     #align(horizon)[
-      #toolbox.all-sections((sections, current) => {
+      #(api.toolbox.all-sections)((sections, current) => {
         sections
           .map(s => if s == current { emph(s) } else { s })
           .join([ #linebreak() ])
@@ -380,152 +341,68 @@ $endif$
   ]
 }
 
-#let projector-touying-section-slide(name, body) = slide(
+#let projector-touying-section-slide(api, name, body) = (api.slide)(
   config: touying-pkg.config-page(header: [#name]),
   body,
 )
-#let projector-default-section-slide(name) = if backend == "touying" {
-  projector-touying-section-slide(name, [
+#let projector-default-section-slide(api, name) = if backend == "touying" {
+  projector-touying-section-slide(api, name, [
     #align(horizon)[
       #text(size: 4em)[#strong(name)]
-      #toolbox.register-section(name)
+      #(api.toolbox.register-section)(name)
     ]
   ])
 } else {
-  slide[
+  (api.slide)[
     #align(horizon)[
       #text(size: 4em)[#strong(name)]
-      #toolbox.register-section(name)
+      #(api.toolbox.register-section)(name)
     ]
   ]
 }
 
 $if(theme)$
 #import "$theme$" as projector-theme-module
-
 #let projector-theme = if "projector-theme" in projector-theme-module {
-  projector-theme-module.projector-theme
+  (api, body) => projector-theme-module.projector-theme(api, body)
 } else {
-  it => it
-}
-#let projector-touying-theme-slide(config: (:), body) = touying-pkg.empty-slide(
-  config: config,
-  [
-    #show pagebreak: it => none
-    #body
-  ],
-)
-#let projector-theme-slide(body) = if backend == "touying" {
-  projector-touying-theme-slide(body)
-} else {
-  body
-}
-#let projector-theme-section-slide(name, body) = if backend == "touying" {
-  projector-touying-theme-slide(
-    config: touying-pkg.config-page(header: [#name]),
-    [
-      #toolbox.register-section(name)
-      #body
-    ],
-  )
-} else {
-  body
+  (api, body) => body
 }
 #let title-slide = if "title-slide" in projector-theme-module {
-  if backend == "touying" {
-    (title, subtitle, authors, date) => projector-theme-slide(
-      projector-theme-module.title-slide(title, subtitle, authors, date),
-    )
-  } else {
-    projector-theme-module.title-slide
-  }
+  (api, title, subtitle, authors, date) => projector-theme-module.title-slide(api, title, subtitle, authors, date)
 } else {
   projector-default-title-slide
 }
 #let toc-slide = if "toc-slide" in projector-theme-module {
-  if backend == "touying" {
-    toc_title => projector-theme-slide(
-      projector-theme-module.toc-slide(toc_title),
-    )
-  } else {
-    projector-theme-module.toc-slide
-  }
+  (api, toc_title) => projector-theme-module.toc-slide(api, toc_title)
 } else {
   projector-default-toc-slide
 }
 #let section-slide = if "section-slide" in projector-theme-module {
-  if backend == "touying" {
-    name => projector-theme-section-slide(
-      name,
-      projector-theme-module.section-slide(name),
-    )
-  } else {
-    projector-theme-module.section-slide
-  }
+  (api, name) => projector-theme-module.section-slide(api, name)
 } else {
   projector-default-section-slide
 }
 $else$
-#let projector-theme = it => it
+#let projector-theme = (api, body) => body
 #let title-slide = projector-default-title-slide
 #let toc-slide = projector-default-toc-slide
 #let section-slide = projector-default-section-slide
 $endif$
 
-#let polylux-setup(handout) = {
-  if handout {
-    polylux-pkg.enable-handout-mode(true)
-  }
-}
-#let touying-setup(handout) = {}
-
-#let polylux-apply(body, paper, margin, ..args) = body
-#let touying-apply(
+#let backend-setup = backend-module.setup
+#let backend-apply = (body, paper, margin, handout: false, title: none, subtitle: none, authors: none, date: none) => backend-module.apply(
   body,
-  paper,
-  margin,
-  handout: false,
-  title: none,
-  subtitle: none,
-  authors: none,
-  date: none,
-) = touying-theme.with(
-  aspect-ratio: if paper == "presentation-4-3" { "4-3" } else { "16-9" },
-  header: toolbox.current-section,
-  touying-pkg.config-page(
-    paper: paper,
-    margin: margin,
-    numbering: none,
-    header: toolbox.current-section,
-  ),
-  touying-pkg.config-common(
-    handout: handout,
-    slide-level: 2,
-    new-section-slide-fn: none,
-  ),
-  touying-pkg.config-methods(
-    init: (self: none, body) => body,
-  ),
-  touying-pkg.config-info(
-    title: title,
-    subtitle: subtitle,
-    author: touying-author-content(authors),
-    date: date,
-  ),
-  footer: none,
-  footer-right: context touying-pkg.utils.slide-counter.display(),
-)(body)
-
-#let backend-setup = if backend == "touying" {
-  touying-setup
-} else {
-  polylux-setup
-}
-#let backend-apply = if backend == "touying" {
-  touying-apply
-} else {
-  polylux-apply
-}
+  slide-fn: slide,
+  theme: touying-theme,
+  paper: paper,
+  margin: margin,
+  handout: handout,
+  title: title,
+  subtitle: subtitle,
+  authors: authors,
+  date: date,
+)
 
 $if(projector)$
 $for(projector/pairs)$

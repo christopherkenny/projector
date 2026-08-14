@@ -41,6 +41,9 @@ This template includes several custom arguments that can be supplied in the YAML
 - `backend`: the slide backend to use (`polylux` is the default; `touying` is also supported)
 - `touying-theme`: an optional built-in theme for Touying
 
+Theme hooks receive a backend-neutral `api` record. Use its slide functions
+and toolbox fields instead of importing Polylux or Touying directly.
+
 ## Controlling Title, ToC, and Sections Slides
 
 To modify these three particular slides, you need to adjust them in your template file.
@@ -48,9 +51,9 @@ Simply redefine the functions that produce them with your own version.
 
 The function signatures should be as follows:
 
-- `title-slide(title, subtitle, authors, date)`
-- `toc-slide(toc_title)`
-- `section-slide(name)`
+- `title-slide(api, title, subtitle, authors, date)`
+- `toc-slide(api, toc_title)`
+- `section-slide(api, name)`
 
 ### Using other Typst functions
 
