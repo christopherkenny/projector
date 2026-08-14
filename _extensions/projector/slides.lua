@@ -37,6 +37,22 @@ local function append_all(target, source)
   end
 end
 
+local function append_blocks(target, source)
+  if source.t ~= nil then
+    table.insert(target, source)
+  else
+    append_all(target, source)
+  end
+end
+
+local function buffer_or_return(value)
+  if pending_callout then
+    append_blocks(buffered_blocks, value)
+    return {}
+  end
+  return value
+end
+
 local function close_explicit_slide(blocks)
   if in_slide then
     table.insert(blocks, pandoc.RawBlock("typst", "]"))
@@ -197,22 +213,22 @@ local function incremental_list(el)
 end
 
 function BulletList(el)
-  if in_nonincremental_div then return el end
+  if in_nonincremental_div then return buffer_or_return(el) end
   if in_incremental_div or global_incremental then
-    return incremental_list(el)
+    return buffer_or_return(incremental_list(el))
   end
-  return el
+  return buffer_or_return(el)
 end
 
 function OrderedList(el)
-  if in_nonincremental_div then return el end
+  if in_nonincremental_div then return buffer_or_return(el) end
   if in_incremental_div or global_incremental then
-    return incremental_list(el)
+    return buffer_or_return(incremental_list(el))
   end
-  return el
+  return buffer_or_return(el)
 end
 
-function Div(el)
+local function transform_div(el)
   if el.classes:includes("columns") then
     local fractions = {}
     local columns = {}
@@ -283,6 +299,22 @@ function Div(el)
   return el
 end
 
+function Div(el)
+  if not pending_callout then
+    return transform_div(el)
+  end
+
+  local callout = pending_callout
+  pending_callout = nil
+  local result = transform_div(el)
+  pending_callout = callout
+  return buffer_or_return(result)
+end
+
+local function buffer_block(el)
+  return buffer_or_return(el)
+end
+
 function finalize(doc)
   append_all(doc.blocks, flush_callout())
   close_explicit_slide(doc.blocks)
@@ -296,9 +328,17 @@ return {
     Div = Div,
     BulletList = BulletList,
     OrderedList = OrderedList,
+    BlockQuote = buffer_block,
+    CodeBlock = buffer_block,
+    DefinitionList = buffer_block,
+    Figure = buffer_block,
     Header = Header,
     HorizontalRule = HorizontalRule,
+    LineBlock = buffer_block,
     Para = Para,
+    Plain = buffer_block,
+    RawBlock = buffer_block,
+    Table = buffer_block,
   },
   { Pandoc = finalize },
 }
