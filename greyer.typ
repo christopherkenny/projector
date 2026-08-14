@@ -14,6 +14,7 @@
 
 #let section-slide(api, name) = {
   (api.slide)[
+    #set align(horizon)
     #text(size: 3em)[
       #name
     ]

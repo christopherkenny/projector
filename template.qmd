@@ -13,7 +13,7 @@ format:
   projector-typst:
     keep-typ: false
     #backend: touying
-    # touying-theme: simple
+    #touying-theme: simple
 bullet-incremental: true
 toc: true
 handout: false
