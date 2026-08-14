@@ -278,3 +278,41 @@ The function signatures should be as follows:
 :::
 
 You do not need to use the arguments in the functions, but they must take those arguments or it will break.
+
+## Interchangeable backends and themes
+
+`projector` currently supports two different backends: `polylux` and `touying`.
+The markdown content of the slides is independent of the backend.
+
+`touying` supports built-in themes via `touying-theme`, which can be mixed-and-matched with the custom themes from
+[`projector-themes`](https://github.com/christopherkenny/projector-themes):
+
+```yaml
+format:
+  projector-typst:
+    backend: touying
+    touying-theme: simple
+theme: metropolis.typ
+```
+
+## Using `api.*` functions
+
+Theme files receive the selected backend as `api`. Use its slide functions and
+toolbox helpers instead of importing Polylux or Touying directly:
+
+```typ
+#let section-slide(api, name) = (api.slide)[
+  #(api.toolbox.register-section)(name)
+  #name
+]
+
+#let toc-slide(api, title) = (api.slide)[
+  #(api.toolbox.all-sections)((sections, current) => {
+    enum(..sections)
+  })
+]
+```
+
+Other common fields include `api.pause`, `api.item-by-item`,
+`api.slide-number`, and toolbox helpers such as `progress-ratio` and
+`next-heading`.
