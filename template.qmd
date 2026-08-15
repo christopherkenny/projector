@@ -116,11 +116,11 @@ right aligned
 :::: {.columns align=center totalwidth=20em}
 
 ::: {.column width="40%"}
-contents...
+left contents...
 :::
 
 ::: {.column width="60%" align=bottom}
-contents...
+right contents...
 :::
 
 ::::
@@ -295,7 +295,7 @@ format:
 theme: metropolis.typ
 ```
 
-## Using `api.*` functions
+## Using `api` functions
 
 Theme files receive the selected backend as `api`. Use its slide functions and
 toolbox helpers instead of importing Polylux or Touying directly:

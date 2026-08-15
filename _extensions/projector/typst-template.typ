@@ -24,6 +24,12 @@
   region: "US",
   font: none,
   fontsize: 11pt,
+  api: none,
+  heading-family: none,
+  heading-weight: "bold",
+  heading-style: "normal",
+  heading-color: black,
+  heading-line-height: none,
   mathfont: none,
   codefont: none,
   linestretch: 1,
@@ -42,7 +48,7 @@
 ) = {
 
   show: it => if theme != none {
-    projector-theme(theme-api, it)
+    projector-theme(api, it)
   } else {
     it
   }
@@ -95,11 +101,19 @@
 
   let body = {
     if title != none or authors != none or date != none {
-      title-slide(theme-api, title, subtitle, authors, date)
+      let title-body = {
+        set par(leading: heading-line-height) if heading-line-height != none
+        set text(font: heading-family) if heading-family != none
+        set text(weight: heading-weight) if heading-weight != none
+        set text(style: heading-style) if heading-style != "normal"
+        set text(fill: heading-color) if heading-color != black
+        title-slide(api, title, subtitle, authors, date)
+      }
+      title-body
     }
 
     if toc {
-      toc-slide(theme-api, toc_title)
+      toc-slide(api, toc_title)
     }
 
     if cols == 1 {

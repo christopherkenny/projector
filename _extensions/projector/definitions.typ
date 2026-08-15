@@ -244,18 +244,6 @@
   body: body
 )
 
-#let theme-api = (
-  slide: slide,
-  focus-slide: focus-slide,
-  last-slide: last-slide,
-  pause: pause,
-  item-by-item: item-by-item,
-  slide-number: slide-number,
-  later: later,
-  speaker-note: speaker-note,
-  toolbox: toolbox,
-)
-
 #let projector-default-title-slide(api, title, subtitle, authors, date) = {
   (api.slide)[
     #if title != none {

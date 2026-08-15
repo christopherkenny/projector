@@ -44,6 +44,20 @@ This template includes several custom arguments that can be supplied in the YAML
 Theme hooks receive a backend-neutral `api` record. Use its slide functions
 and toolbox fields instead of importing Polylux or Touying directly.
 
+## Using `_brand.yml`
+
+Projector uses Quarto's standard Typst brand processing. Brand colors, logos,
+and typography are applied to the page, headings, links, and code; explicit
+projector options such as `mainfont` and `fontsize` take precedence where they
+are supplied. Quarto's `brand-mode: dark` selects the dark brand when rendering.
+
+Custom themes can access the resolved brand through `api.brand`:
+
+- `api.brand.colors`: semantic and named colors from `color`
+- `api.brand.background-colors`: lighter background variants
+- `api.brand.logos`: resolved `small`, `medium`, and `large` logos
+- `api.brand.typography`: normalized base, heading, and monospace settings
+
 ## Controlling Title, ToC, and Sections Slides
 
 To modify these three particular slides, you need to adjust them in your template file.
