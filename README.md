@@ -34,7 +34,7 @@ This template includes several custom arguments that can be supplied in the YAML
 - `margin`: sets page margins
 - `papersize`: the paper size to use (choices listed [here](https://typst.app/docs/reference/layout/page/))
 - `toc`: whether to display the table of contents
-- `toc_title`: title of the table of contents
+- `toc-title`: title of the table of contents
 - `background-image`: the path to an image to put as the background
 - `handout`: display as a handout, removing incrementals
 - `theme`: a file name containing your customizations
