@@ -47,7 +47,7 @@
   later: later,
   speaker-note: speaker-note,
   setup: setup,
-  apply: (body, paper: "presentation-16-9", margin: (x: 0.5in, y: 0.5in), handout: false, title: none, subtitle: none, authors: none, date: none) => body,
+  apply: (body, paper: "presentation-16-9", margin: (x: 0.5in, y: 0.5in), fontsize: 11pt, handout: false, title: none, subtitle: none, authors: none, date: none) => body,
   section-heading: section-heading,
   default-toc-slide: default-toc-slide,
   default-section-slide: default-section-slide,

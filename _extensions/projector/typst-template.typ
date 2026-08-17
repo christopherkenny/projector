@@ -127,6 +127,7 @@
     body,
     paper: paper,
     margin: margin,
+    fontsize: fontsize,
     handout: handout,
     title: title,
     subtitle: subtitle,

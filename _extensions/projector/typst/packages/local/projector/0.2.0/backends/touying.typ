@@ -65,6 +65,7 @@
     body,
     paper: "presentation-16-9",
     margin: (x: 0.5in, y: 0.5in),
+    fontsize: 11pt,
     handout: false,
     title: none,
     subtitle: none,
@@ -103,7 +104,10 @@
           },
           date: date,
         ),
-      )(body)
+      )({
+        set text(size: fontsize * 1.25)
+        body
+      })
     }
     render(page-config: (margin: margin, header: none, footer: none))
   }
