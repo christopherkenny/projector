@@ -44,6 +44,17 @@ This template includes several custom arguments that can be supplied in the YAML
 Theme hooks receive a backend-neutral `api` record. Use its slide functions
 and toolbox fields instead of importing Polylux or Touying directly.
 
+## Controlling Title, ToC, and Sections Slides
+
+To modify these three particular slides, you need to adjust them in your template file.
+Simply redefine the functions that produce them with your own version.
+
+The function signatures should be as follows:
+
+- `title-slide(api, title, subtitle, authors, date)`
+- `toc-slide(api, toc_title)`
+- `section-slide(api, name)`
+
 ## Using `_brand.yml`
 
 Projector uses Quarto's standard Typst brand processing. Brand colors, logos,
@@ -58,18 +69,7 @@ Custom themes can access the resolved brand through `api.brand`:
 - `api.brand.logos`: resolved `small`, `medium`, and `large` logos
 - `api.brand.typography`: normalized base, heading, and monospace settings
 
-## Controlling Title, ToC, and Sections Slides
-
-To modify these three particular slides, you need to adjust them in your template file.
-Simply redefine the functions that produce them with your own version.
-
-The function signatures should be as follows:
-
-- `title-slide(api, title, subtitle, authors, date)`
-- `toc-slide(api, toc_title)`
-- `section-slide(api, name)`
-
-### Using other Typst functions
+## Using other Typst functions
 
 This extension comes preloaded with my [`typst-function`](https://github.com/christopherkenny/typst-function) Quarto extension to make it easy to use bits of Typst for formatting.
 This feature is entirely optional, but may simplify making tweaks to your slides.
