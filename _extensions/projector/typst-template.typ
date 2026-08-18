@@ -24,6 +24,12 @@
   region: "US",
   font: none,
   fontsize: 11pt,
+  api: none,
+  heading-family: none,
+  heading-weight: "bold",
+  heading-style: "normal",
+  heading-color: black,
+  heading-line-height: none,
   mathfont: none,
   codefont: none,
   linestretch: 1,
@@ -41,21 +47,17 @@
   doc,
 ) = {
 
-  show: it => {
-    if theme != none {
-      //import theme: *
-      show: projector-theme
-      it
-    } else {
-      it
-    }
+  show: it => if theme != none {
+    projector-theme(api, it)
+  } else {
+    it
   }
 
   set page(
     paper: paper,
     margin: margin,
     numbering: none,
-    footer: context align(center)[#toolbox.slide-number],
+    footer: context align(center)[#slide-number()],
   )
 
   show: it => {
@@ -95,23 +97,43 @@
   show heading: set text(size: 1.5em)
   set text(size: 1.25em)
 
-  if handout {
-    enable-handout-mode(true)
+  backend-setup(handout: handout)
+
+  let body = {
+    if title != none or authors != none or date != none {
+      let title-body = {
+        set par(leading: heading-line-height) if heading-line-height != none
+        set text(font: heading-family) if heading-family != none
+        set text(weight: heading-weight) if heading-weight != none
+        set text(style: heading-style) if heading-style != "normal"
+        set text(fill: heading-color) if heading-color != black
+        title-slide(api, title, subtitle, authors, date)
+      }
+      title-body
+    }
+
+    if toc {
+      toc-slide(api, toc_title)
+    }
+
+    if cols == 1 {
+      doc
+    } else {
+      columns(cols, doc)
+    }
   }
 
-  if title != none or authors != none or date != none {
-    title-slide(title, subtitle, authors, date)
-  }
-
-  if toc {
-    toc-slide(toc_title)
-  }
-
-  if cols == 1 {
-    doc
-  } else {
-    columns(cols, doc)
-  }
+  backend-apply(
+    body,
+    paper: paper,
+    margin: margin,
+    fontsize: fontsize,
+    handout: handout,
+    title: title,
+    subtitle: subtitle,
+    authors: authors,
+    date: date,
+  )
 }
 
 #set table(

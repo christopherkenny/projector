@@ -1,5 +1,5 @@
 ---
-title: A presentation with Polylux via Quarto
+title: A presentation in Typst via Quarto
 subtitle: using `projector`
 author:
   - name: Author One
@@ -12,6 +12,8 @@ date: today
 format:
   projector-typst:
     keep-typ: false
+    #backend: touying
+    #touying-theme: simple
 bullet-incremental: true
 toc: true
 handout: false
@@ -23,7 +25,7 @@ theme: greyer.typ
 
 ## Introduction
 
-`projector` is a [Quarto](https://quarto.org/) extension to create [Polylux](https://github.com/polylux-typ/polylux) presentations in [Typst](https://typst.app/) while only writing [Markdown](https://daringfireball.net/projects/markdown/).
+`projector` is a [Quarto](https://quarto.org/) extension to create Typst presentations with interchangeable slide backends while only writing [Markdown](https://daringfireball.net/projects/markdown/).
 
 It is designed to mimic all of the properties of beamer so that you can (hopefully) convert just by:
 
@@ -114,11 +116,11 @@ right aligned
 :::: {.columns align=center totalwidth=20em}
 
 ::: {.column width="40%"}
-contents...
+left contents...
 :::
 
 ::: {.column width="60%" align=bottom}
-contents...
+right contents...
 :::
 
 ::::
@@ -134,7 +136,7 @@ Include code with triple backticks:
 ```r
 library(dplyr)
 
-starwars %>%
+starwars |>
   filter(species == "Droid")
 ```
 
@@ -226,9 +228,11 @@ Some features can be controlled via yaml options.
 - `margin`: sets page margins
 - `papersize`: the paper size to use (choices listed [here](https://typst.app/docs/reference/layout/page/))
 - `toc`: whether to display the table of contents
-- `toc_title`: title of the table of contents
+- `toc-title`: title of the table of contents
 - `background-image`: the path to an image to put as the background
 - `handout`: display as a handout, removing incrementals
+- `backend`: the slide backend; `polylux` is the default
+- `touying-theme`: the built-in Touying theme to use when `backend: touying`
 
 :::
 
@@ -236,13 +240,17 @@ Some features can be controlled via yaml options.
 
 For additional customization, you can supply a template style file to use.
 
-This must contain a function `projector-theme` that contains your styling choices.
-That file will be imported before any of the YAML options, so the YAML options take precedence.
+The file is imported as an ordinary Typst module, so relative imports inside the
+theme continue to resolve relative to the theme file. It can define
+`projector-theme(api, doc)` for styling and the existing `title-slide`, `toc-slide`,
+and `section-slide` hooks for custom slides. The `api` record is backend-neutral
+and exposes the selected backend's slide functions, incremental functions, and
+toolbox. These hook names remain the override points for every backend.
 
 This should look like
 
 ```typ
-#let projector-theme(doc) = {
+#let projector-theme(api, doc) = {
   // your styling choices
   doc
 }
@@ -263,10 +271,48 @@ The function signatures should be as follows:
 
 :::{.nonincremental}
 
-- `title-slide(title, subtitle, authors, date)`
-- `toc-slide(toc_title)`
-- `section-slide(name)`
+- `title-slide(api, title, subtitle, authors, date)`
+- `toc-slide(api, toc_title)`
+- `section-slide(api, name)`
 
 :::
 
 You do not need to use the arguments in the functions, but they must take those arguments or it will break.
+
+## Interchangeable backends and themes
+
+`projector` currently supports two different backends: `polylux` and `touying`.
+The markdown content of the slides is independent of the backend.
+
+`touying` supports built-in themes via `touying-theme`, which can be mixed-and-matched with the custom themes from
+[`projector-themes`](https://github.com/christopherkenny/projector-themes):
+
+```yaml
+format:
+  projector-typst:
+    backend: touying
+    touying-theme: simple
+theme: metropolis.typ
+```
+
+## Using `api` functions
+
+Theme files receive the selected backend as `api`. Use its slide functions and
+toolbox helpers instead of importing Polylux or Touying directly:
+
+```typ
+#let section-slide(api, name) = (api.slide)[
+  #(api.toolbox.register-section)(name)
+  #name
+]
+
+#let toc-slide(api, title) = (api.slide)[
+  #(api.toolbox.all-sections)((sections, current) => {
+    enum(..sections)
+  })
+]
+```
+
+Other common fields include `api.pause`, `api.item-by-item`,
+`api.slide-number`, and toolbox helpers such as `progress-ratio` and
+`next-heading`.

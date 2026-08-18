@@ -1,0 +1,9 @@
+# Keep both selectable slide backends available to offline builds.
+rootdir = "."
+destination = "typst/packages"
+discover = ["typst-gather-imports.typ"]
+
+[preview]
+polylux = "0.4.0"
+touying = "0.7.4"
+fontawesome = "0.5.0"

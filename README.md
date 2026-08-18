@@ -1,7 +1,7 @@
 
 # `projector` Format <img src='projector.png' align="right" height="150" />
 
-A Quarto format for making slides with [polylux](https://github.com/andreasKroepelin/polylux).
+A Quarto format for making Typst slides with [Polylux](https://github.com/andreasKroepelin/polylux) or [Touying](https://github.com/touying-typ/touying).
 This template tries to replicate the Quarto-side syntax for [Beamer](https://quarto.org/docs/presentations/beamer.html), [PowerPoint](https://quarto.org/docs/presentations/powerpoint.html), and [Revealjs](https://quarto.org/docs/presentations/revealjs/) slides.
 
 <!-- pdftools::pdf_convert('template.pdf') -->
@@ -13,7 +13,7 @@ In order of importance:
 
 1. Replicate the syntax of existing Quarto beamer slides so that `projector` can be used as a drop-in extension for the beamer type, up to any additional LaTeX-specific styling.
 
-2. Incorporate `polylux` features automatically, so that functions like `#slide` or `#toolbox.register-section` never need to be modified directly, but are fully controlled by regular Quarto features.
+2. Support multiple Typst slide backends without changing the Quarto-facing syntax.
 
 3. Minimize nonstandard defaults. By setting as few features up automatically as possible, this should be customizeable using a header `.typ` file. When an option would be hard to control otherwise, it should be controlled via a YAML option in the Quarto doc.
 
@@ -26,7 +26,7 @@ quarto use template christopherkenny/projector
 This will install the format extension and create an example `.qmd` file
 that you can use as a starting place for your slides.
 
-## Using `projector` to make Polylux slides
+## Using `projector` to make slides
 
 This template includes several custom arguments that can be supplied in the YAML header.
 
@@ -34,10 +34,29 @@ This template includes several custom arguments that can be supplied in the YAML
 - `margin`: sets page margins
 - `papersize`: the paper size to use (choices listed [here](https://typst.app/docs/reference/layout/page/))
 - `toc`: whether to display the table of contents
-- `toc_title`: title of the table of contents
+- `toc-title`: title of the table of contents
 - `background-image`: the path to an image to put as the background
 - `handout`: display as a handout, removing incrementals
 - `theme`: a file name containing your customizations
+- `backend`: the slide backend to use (`polylux` is the default; `touying` is also supported)
+- `touying-theme`: an optional built-in theme for Touying
+
+Theme hooks receive a backend-neutral `api` record. Use its slide functions
+and toolbox fields instead of importing Polylux or Touying directly.
+
+## Using `_brand.yml`
+
+Projector uses Quarto's standard Typst brand processing. Brand colors, logos,
+and typography are applied to the page, headings, links, and code; explicit
+projector options such as `mainfont` and `fontsize` take precedence where they
+are supplied. Quarto's `brand-mode: dark` selects the dark brand when rendering.
+
+Custom themes can access the resolved brand through `api.brand`:
+
+- `api.brand.colors`: semantic and named colors from `color`
+- `api.brand.background-colors`: lighter background variants
+- `api.brand.logos`: resolved `small`, `medium`, and `large` logos
+- `api.brand.typography`: normalized base, heading, and monospace settings
 
 ## Controlling Title, ToC, and Sections Slides
 
@@ -46,9 +65,9 @@ Simply redefine the functions that produce them with your own version.
 
 The function signatures should be as follows:
 
-- `title-slide(title, subtitle, authors, date)`
-- `toc-slide(toc_title)`
-- `section-slide(name)`
+- `title-slide(api, title, subtitle, authors, date)`
+- `toc-slide(api, toc_title)`
+- `section-slide(api, name)`
 
 ### Using other Typst functions
 

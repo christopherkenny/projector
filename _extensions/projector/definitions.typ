@@ -1,5 +1,21 @@
-#import "@preview/polylux:0.4.0": *
+#import "@local/projector:0.2.0": load-backend
 #import "@preview/fontawesome:0.5.0": *
+
+#let backend-name = "$if(backend)$$backend$$else$polylux$endif$"
+#let backend-module = load-backend(backend-name)
+#let backend-theme = "$if(projector_backend_theme)$$projector_backend_theme$$else$none$endif$"
+#let backend = backend-module.configure(theme: backend-theme)
+#let toolbox = backend.toolbox
+#let slide = backend.slide
+#let focus-slide = backend.focus-slide
+#let last-slide = backend.last-slide
+#let pause = backend.pause
+#let item-by-item = backend.item-by-item
+#let slide-number = backend.slide-number
+#let later = backend.later
+#let speaker-note = backend.speaker-note
+#let backend-section-heading = backend.section-heading
+#let projector-pause = pause
 
 // Some definitions presupposed by pandoc's typst output.
 #let blockquote(body) = [
@@ -228,11 +244,8 @@
   body: body
 )
 
-#let focus-slide = slide
-#let last-slide = slide
-
-#let title-slide(title, subtitle, authors, date) = {
-  slide[
+#let projector-default-title-slide(api, title, subtitle, authors, date) = {
+  (api.slide)[
     #if title != none {
       align(center)[
         #block(inset: 1em)[
@@ -255,54 +268,53 @@
         columns: (1fr,) * ncols,
         row-gutter: 1.5em,
         ..authors.map(author => align(center)[
-          #author.name \
+          #author.name
+          #linebreak()
           #author.affiliation
         ])
       )
     }
 
     #if date != none {
-      align(center)[#block(inset: 1em)[
-          #date
-        ]
-      ]
+      align(center)[#block(inset: 1em)[#date]]
     }
   ]
 }
 
-#let toc-slide(toc_title) = {
-  slide[
-    #let title = if toc_title == none {
-      auto
-    } else {
-      toc_title
-    }
-    #heading(toc_title)
-    #set text(size: 2em)
-    #align(horizon)[
-      #toolbox.all-sections((sections, current) => {
-        sections
-        .map(s => if s == current { emph(s) } else { s })
-        .join([ #linebreak() ])
-      })
-    ]
-  ]
-}
-
-#let section-slide(name) = {
-  slide[
-    #align(horizon)[
-      #text(size: 4em)[
-        #strong(name)
-      ]
-      #toolbox.register-section(name)
-    ]
-  ]
-}
+#let projector-default-toc-slide(api, toc_title) = (backend.default-toc-slide)(api, toc_title)
+#let projector-default-section-slide(api, name) = (backend.default-section-slide)(api, name)
 
 $if(theme)$
-#import "$theme$": *
+#import "$theme$" as projector-theme-module
+#let projector-theme = if "projector-theme" in projector-theme-module {
+  (api, body) => projector-theme-module.projector-theme(api, body)
+} else {
+  (api, body) => body
+}
+#let title-slide = if "title-slide" in projector-theme-module {
+  (api, title, subtitle, authors, date) => projector-theme-module.title-slide(api, title, subtitle, authors, date)
+} else {
+  projector-default-title-slide
+}
+#let toc-slide = if "toc-slide" in projector-theme-module {
+  (api, toc_title) => projector-theme-module.toc-slide(api, toc_title)
+} else {
+  projector-default-toc-slide
+}
+#let section-slide = if "section-slide" in projector-theme-module {
+  (api, name) => projector-theme-module.section-slide(api, name)
+} else {
+  projector-default-section-slide
+}
+$else$
+#let projector-theme = (api, body) => body
+#let title-slide = projector-default-title-slide
+#let toc-slide = projector-default-toc-slide
+#let section-slide = projector-default-section-slide
 $endif$
+
+#let backend-setup = backend.setup
+#let backend-apply = backend.apply
 
 $if(projector)$
 $for(projector/pairs)$

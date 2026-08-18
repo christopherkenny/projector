@@ -5,6 +5,58 @@ $highlighting-definitions$
 
 $endif$
 
+#let theme-api = (
+  slide: slide,
+  focus-slide: focus-slide,
+  last-slide: last-slide,
+  pause: pause,
+  item-by-item: item-by-item,
+  slide-number: slide-number,
+  later: later,
+  speaker-note: speaker-note,
+  toolbox: toolbox,
+  brand: (
+    colors: brand-color,
+    background-colors: brand-color-background,
+    logos: brand-logo,
+$if(brand.logo.images)$
+    logo-images: brand-logo-images,
+$endif$
+    typography: (
+      base: (
+$if(brand.typography.base.family)$
+        family: $brand.typography.base.family$,
+$endif$
+$if(brand.typography.base.size)$
+        size: $brand.typography.base.size$,
+$endif$
+      ),
+      headings: (
+$if(brand.typography.headings.family)$
+        family: $brand.typography.headings.family$,
+$endif$
+$if(brand.typography.headings.weight)$
+        weight: $brand.typography.headings.weight$,
+$endif$
+$if(brand.typography.headings.style)$
+        style: "$brand.typography.headings.style$",
+$endif$
+$if(brand.typography.headings.color)$
+        color: $brand.typography.headings.color$,
+$endif$
+$if(brand.typography.headings.line-height)$
+        line-height: $brand.typography.headings.line-height$,
+$endif$
+      ),
+      monospace: (
+$if(brand.typography.monospace.family)$
+        family: $brand.typography.monospace.family$,
+$endif$
+      ),
+    ),
+  ),
+)
+
 #show: doc => article(
 $if(title)$
   title: [$title$],
@@ -44,15 +96,40 @@ $if(papersize)$
 $endif$
 $if(mainfont)$
   font: ("$mainfont$",),
+$elseif(brand.typography.base.family)$
+  font: $brand.typography.base.family$,
 $endif$
 $if(fontsize)$
   fontsize: $fontsize$,
+$elseif(brand.typography.base.size)$
+  fontsize: $brand.typography.base.size$,
+$endif$
+$if(title)$
+$if(brand.typography.headings.family)$
+  heading-family: $brand.typography.headings.family$,
+$elseif(mainfont)$
+  heading-family: ("$mainfont$",),
+$endif$
+$if(brand.typography.headings.weight)$
+  heading-weight: $brand.typography.headings.weight$,
+$endif$
+$if(brand.typography.headings.style)$
+  heading-style: "$brand.typography.headings.style$",
+$endif$
+$if(brand.typography.headings.color)$
+  heading-color: $brand.typography.headings.color$,
+$endif$
+$if(brand.typography.headings.line-height)$
+  heading-line-height: $brand.typography.headings.line-height$,
+$endif$
 $endif$
 $if(mathfont)$
   mathfont: ($for(mathfont)$"$mathfont$",$endfor$),
 $endif$
 $if(codefont)$
   codefont: ($for(codefont)$"$codefont$",$endfor$),
+$elseif(brand.typography.monospace.family)$
+  codefont: $brand.typography.monospace.family$,
 $endif$
 $if(linestretch)$
   linestretch: $linestretch$,
@@ -89,5 +166,6 @@ $endif$
 $if(theme)$
   theme: "$theme$",
 $endif$
+  api: theme-api,
   doc,
 )
