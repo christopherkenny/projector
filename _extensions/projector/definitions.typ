@@ -14,7 +14,7 @@
 #let slide-number = backend.slide-number
 #let later = backend.later
 #let speaker-note = backend.speaker-note
-#let backend-section-heading = backend.section-heading
+#let backend-render-section = backend.render-section
 #let backend-render-slide = backend.render-slide
 #let projector-pause = pause
 

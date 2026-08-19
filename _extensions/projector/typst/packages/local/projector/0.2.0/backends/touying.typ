@@ -12,15 +12,17 @@
   "projector: `later` is Polylux-specific and unavailable with the Touying backend; use `pause` for a backend-neutral reveal break"
 )
 #let speaker-note = toolbox.pdfpc.speaker-note
-#let section-heading(name) = none
 
-#let make-theme(theme-module, theme-function) = (
+#let make-theme(theme-module, theme-function, heading-title: true) = (
   slide: theme-module.slide,
+  heading-title: heading-title,
+  focus-slide-special: "focus-slide" in theme-module,
   focus-slide: if "focus-slide" in theme-module {
     theme-module.focus-slide
   } else {
     theme-module.slide
   },
+  last-slide-special: "last-slide" in theme-module,
   last-slide: if "last-slide" in theme-module {
     theme-module.last-slide
   } else {
@@ -32,12 +34,19 @@
 #let select-theme(name) = if name == "none" {
   (
     slide: touying.slide,
+    heading-title: false,
+    focus-slide-special: false,
     focus-slide: touying.slide,
+    last-slide-special: false,
     last-slide: touying.slide,
     theme: touying.touying-slides,
   )
 } else if name == "default" {
-  make-theme(touying.themes.default, touying.themes.default.default-theme)
+  make-theme(
+    touying.themes.default,
+    touying.themes.default.default-theme,
+    heading-title: false,
+  )
 } else if name == "simple" {
   make-theme(touying.themes.simple, touying.themes.simple.simple-theme)
 } else if name == "metropolis" {
@@ -59,9 +68,40 @@
   let slide = selected.slide
   let theme-function = selected.theme
 
-  let render-slide(title: none, slide-kind: "slide", body) = if theme != "none" and slide-kind == "slide" and title != none {
-    heading(depth: 2, title)
-    body
+  let render-section(name, api: none, section-slide-fn: none) = heading(depth: 1, name)
+
+  let render-slide(title: none, slide-kind: "slide", body) = if theme != "none" {
+    let slide-heading = if title == none {
+      heading(depth: 2, outlined: false, [])
+    } else {
+      heading(depth: 2, title)
+    }
+    let needs-body-title = if slide-kind == "focus-slide" {
+      selected.focus-slide-special or not selected.heading-title
+    } else if slide-kind == "last-slide" {
+      selected.last-slide-special or not selected.heading-title
+    } else {
+      not selected.heading-title
+    }
+    let visible-title = if title != none and needs-body-title {
+      heading(depth: 3, outlined: false, title)
+    } else {
+      none
+    }
+    let content = slide-heading + visible-title + body
+    if slide-kind == "slide" {
+      content
+    } else {
+      let slide-fn = if slide-kind == "focus-slide" {
+        selected.focus-slide
+      } else {
+        selected.last-slide
+      }
+      touying.touying-set-config(
+        touying.config-common(slide-fn: slide-fn),
+        content,
+      )
+    }
   } else {
     let slide-fn = if slide-kind == "focus-slide" {
       selected.focus-slide
@@ -88,7 +128,18 @@
     subtitle: none,
     authors: none,
     date: none,
+    api: none,
+    section-slide-fn: none,
   ) = {
+    let new-section-slide-fn = if api == none or section-slide-fn == none {
+      none
+    } else {
+      body => section-slide-fn(
+        api,
+        touying.utils.display-current-heading(level: 1),
+      )
+    }
+
     let render(page-config: (:)) = {
       let page = (
         paper: paper,
@@ -106,7 +157,8 @@
         touying.config-common(
           handout: handout,
           slide-level: 2,
-          new-section-slide-fn: none,
+          new-section-slide-fn: new-section-slide-fn,
+          receive-body-for-new-section-slide-fn: true,
           slide-fn: slide,
         ),
         touying.config-info(
@@ -160,7 +212,7 @@
     speaker-note: speaker-note,
     setup: setup,
     apply: apply,
-    section-heading: section-heading,
+    render-section: render-section,
     render-slide: render-slide,
     default-toc-slide: default-toc-slide,
     default-section-slide: default-section-slide,

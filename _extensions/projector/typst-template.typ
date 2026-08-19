@@ -133,6 +133,8 @@
     subtitle: subtitle,
     authors: authors,
     date: date,
+    api: api,
+    section-slide-fn: section-slide,
   )
 }
 

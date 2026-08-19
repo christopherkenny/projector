@@ -124,14 +124,14 @@ function Header(el)
   end
 
   if el.level == 1 then
+    local section_name = pandoc.utils.stringify(el)
     table.insert(
       blocks,
-      pandoc.RawBlock("typst", "#backend-section-heading(" .. typst_string(pandoc.utils.stringify(el)) .. ")")
-    )
-    table.insert(blocks, pandoc.RawBlock("typst", ""))
-    table.insert(
-      blocks,
-      pandoc.RawBlock("typst", "#section-slide(theme-api, " .. typst_string(pandoc.utils.stringify(el)) .. ")")
+      pandoc.RawBlock(
+        "typst",
+        "#backend-render-section(" .. typst_string(section_name)
+          .. ", api: theme-api, section-slide-fn: section-slide)"
+      )
     )
     return blocks
   elseif el.level == 2 then
