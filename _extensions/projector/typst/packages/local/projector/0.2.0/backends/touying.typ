@@ -59,6 +59,23 @@
   let slide = selected.slide
   let theme-function = selected.theme
 
+  let render-slide(title: none, slide-kind: "slide", body) = if theme != "none" and slide-kind == "slide" and title != none {
+    heading(depth: 2, title)
+    body
+  } else {
+    let slide-fn = if slide-kind == "focus-slide" {
+      selected.focus-slide
+    } else if slide-kind == "last-slide" {
+      selected.last-slide
+    } else {
+      slide
+    }
+    slide-fn[
+      #if title != none { heading(level: 1, title) }
+      #body
+    ]
+  }
+
   let setup(handout: false) = none
 
   let apply(
@@ -144,6 +161,7 @@
     setup: setup,
     apply: apply,
     section-heading: section-heading,
+    render-slide: render-slide,
     default-toc-slide: default-toc-slide,
     default-section-slide: default-section-slide,
   )

@@ -145,8 +145,14 @@ function Header(el)
     end
 
     table.insert(blocks, pandoc.RawBlock("typst", ""))
-    table.insert(blocks, pandoc.RawBlock("typst", "#" .. macro .. "["))
-    table.insert(blocks, pandoc.RawBlock("typst", "= " .. pandoc.utils.stringify(el)))
+    table.insert(
+      blocks,
+      pandoc.RawBlock(
+        "typst",
+        "#backend-render-slide(title: " .. typst_string(pandoc.utils.stringify(el))
+          .. ", slide-kind: " .. typst_string(macro) .. ")["
+      )
+    )
     in_slide = true
     return blocks
   elseif el.level == 3 then
@@ -184,7 +190,7 @@ function HorizontalRule()
   local blocks = flush_callout()
   close_explicit_slide(blocks)
   table.insert(blocks, pandoc.RawBlock("typst", ""))
-  table.insert(blocks, pandoc.RawBlock("typst", "#slide["))
+  table.insert(blocks, pandoc.RawBlock("typst", "#backend-render-slide["))
   in_slide = true
   return blocks
 end

@@ -15,6 +15,7 @@
 #let later = backend.later
 #let speaker-note = backend.speaker-note
 #let backend-section-heading = backend.section-heading
+#let backend-render-slide = backend.render-slide
 #let projector-pause = pause
 
 // Some definitions presupposed by pandoc's typst output.

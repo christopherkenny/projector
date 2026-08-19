@@ -15,6 +15,19 @@
   if handout { polylux.enable-handout-mode(true) }
 }
 #let section-heading(name) = none
+#let render-slide(title: none, slide-kind: "slide", body) = {
+  let slide-fn = if slide-kind == "focus-slide" {
+    focus-slide
+  } else if slide-kind == "last-slide" {
+    last-slide
+  } else {
+    slide
+  }
+  slide-fn[
+    #if title != none { heading(level: 1, title) }
+    #body
+  ]
+}
 
 #let default-toc-slide(api, toc_title) = (api.slide)[
   #let title = if toc_title == none { "Outline" } else { toc_title }
@@ -49,6 +62,7 @@
   setup: setup,
   apply: (body, paper: "presentation-16-9", margin: (x: 0.5in, y: 0.5in), fontsize: 11pt, handout: false, title: none, subtitle: none, authors: none, date: none) => body,
   section-heading: section-heading,
+  render-slide: render-slide,
   default-toc-slide: default-toc-slide,
   default-section-slide: default-section-slide,
 )
