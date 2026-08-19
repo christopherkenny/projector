@@ -134,10 +134,11 @@
     let new-section-slide-fn = if api == none or section-slide-fn == none {
       none
     } else {
-      body => section-slide-fn(
-        api,
-        touying.utils.display-current-heading(level: 1),
-      )
+      body => touying.touying-slide-wrapper(self => {
+        let section-heading = self.headings.last()
+        let wrapper = section-slide-fn(api, section-heading.body)
+        (wrapper.value.fn)(self)
+      })
     }
 
     let render(page-config: (:)) = {
