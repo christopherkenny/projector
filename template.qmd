@@ -190,6 +190,34 @@ A thing to remember
 For a little less caution than an alert
 
 
+## Callouts: Advanced
+
+If a callout needs pauses inside its body, use a fenced callout:
+
+
+```markdown
+::: {.callout-tip}
+
+This is the first part of the tip.
+
+. . .
+
+This is the second part of the tip.
+
+:::
+```
+
+::: {.callout-tip}
+
+This is the first part of the tip.
+
+. . .
+
+This is the second part of the tip.
+
+:::
+
+
 # Typst Specialties
 
 ## Using Typst functions

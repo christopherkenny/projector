@@ -4,10 +4,12 @@
 
 local backends = {
   polylux = {
+    pause = "#show: later",
   },
   touying = {
     theme_key = "touying-theme",
     default_theme = "simple",
+    pause = "#pause",
   },
 }
 
@@ -196,14 +198,16 @@ function HorizontalRule()
 end
 
 function Para(el)
+  local text = pandoc.utils.stringify(el)
+  if in_slide and (text:match("^%. ?%. ?%.$") or text == "…") then
+    local blocks = flush_callout()
+    table.insert(blocks, pandoc.RawBlock("typst", backend_spec.pause))
+    return blocks
+  end
+
   if pending_callout then
     table.insert(buffered_blocks, el)
     return {}
-  end
-
-  local text = pandoc.utils.stringify(el)
-  if in_slide and (text:match("^%. ?%. ?%.$") or text == "…") then
-    return pandoc.RawBlock("typst", "#projector-pause")
   end
   return el
 end
