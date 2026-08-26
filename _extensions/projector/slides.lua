@@ -255,7 +255,33 @@ local function transform_div(el)
           fraction = percentage and (tostring(percentage) .. "fr") or width
         end
 
-        local content = pandoc.write(pandoc.Pandoc(block.content), "typst")
+        local previous_incremental = in_incremental_div
+        local previous_nonincremental = in_nonincremental_div
+        if block.classes:includes("incremental") then
+          in_incremental_div = true
+        end
+        if block.classes:includes("nonincremental") then
+          in_nonincremental_div = true
+        end
+
+        local walked = block:walk({
+          traverse = "topdown",
+          Div = function(nested)
+            if nested.classes:includes("columns")
+                or nested.classes:includes("incremental")
+                or nested.classes:includes("nonincremental")
+                or nested.classes:includes("notes") then
+              return transform_div(nested), false
+            end
+            return nested
+          end,
+          BulletList = BulletList,
+          OrderedList = OrderedList,
+          Para = Para,
+        })
+        in_incremental_div = previous_incremental
+        in_nonincremental_div = previous_nonincremental
+        local content = pandoc.write(pandoc.Pandoc(walked.content), "typst")
         content = content:gsub("%s+$", "")
         table.insert(columns, "[" .. content .. "]")
         table.insert(fractions, fraction)
@@ -283,20 +309,22 @@ local function transform_div(el)
   end
 
   if el.classes:includes("incremental") then
+    local previous_incremental = in_incremental_div
     in_incremental_div = true
     local walked = pandoc.walk_block(el, {
       BulletList = BulletList,
       OrderedList = OrderedList,
     })
-    in_incremental_div = false
+    in_incremental_div = previous_incremental
     return walked.content
   elseif el.classes:includes("nonincremental") then
+    local previous_nonincremental = in_nonincremental_div
     in_nonincremental_div = true
     local walked = pandoc.walk_block(el, {
       BulletList = BulletList,
       OrderedList = OrderedList,
     })
-    in_nonincremental_div = false
+    in_nonincremental_div = previous_nonincremental
     return walked.content
   elseif el.classes:includes("notes") then
     if not include_pdfpc_notes then return {} end
