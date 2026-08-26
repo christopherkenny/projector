@@ -23,10 +23,14 @@
   } else {
     slide
   }
-  slide-fn[
-    #if title != none { heading(level: 1, title) }
-    #body
-  ]
+  context {
+    let figure-start = counter(figure.where(kind: "quarto-float-fig")).get().first()
+    slide-fn[
+      #counter(figure.where(kind: "quarto-float-fig")).update(figure-start)
+      #if title != none { heading(level: 1, title) }
+      #body
+    ]
+  }
 }
 
 #let default-toc-slide(api, toc_title) = (api.slide)[

@@ -193,6 +193,9 @@
           new-section-slide-fn: new-section-slide-fn,
           receive-body-for-new-section-slide-fn: true,
           slide-fn: slide,
+          frozen-counters: (
+            counter(figure.where(kind: "quarto-float-fig")),
+          ),
         ),
         touying.config-info(
           title: title,
