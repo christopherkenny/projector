@@ -44,6 +44,27 @@ This template includes several custom arguments that can be supplied in the YAML
 Theme hooks receive a backend-neutral `api` record. Use its slide functions
 and toolbox fields instead of importing Polylux or Touying directly.
 
+To customize a built-in backend theme, define `projector-backend(api)` in your
+theme. It can return `theme-args` and `theme-config`; `api.backend` exposes the
+selected backend and its backend-specific helpers.
+
+For example, with Touying's `simple` theme, this moves the current section to
+the top right:
+
+```typ
+#let projector-backend(api) = (
+  theme-args: (
+    header: none,
+    header-right: self => [
+      #(api.backend.utils.display-current-heading)(
+        level: 1,
+        depth: self.slide-level,
+      )
+    ],
+  ),
+)
+```
+
 ## Controlling Title, ToC, and Sections Slides
 
 To modify these three particular slides, you need to adjust them in your template file.

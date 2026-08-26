@@ -13,6 +13,20 @@
 )
 #let speaker-note = toolbox.pdfpc.speaker-note
 
+#let config = (
+  page: touying.config-page,
+  common: touying.config-common,
+  info: touying.config-info,
+  colors: touying.config-colors,
+  methods: touying.config-methods,
+  store: touying.config-store,
+)
+
+#let utils = (
+  display-current-heading: touying.utils.display-current-heading,
+  display-current-short-heading: touying.utils.display-current-short-heading,
+)
+
 #let make-theme(theme-module, theme-function, heading-title: true) = (
   slide: theme-module.slide,
   heading-title: heading-title,
@@ -118,6 +132,13 @@
 
   let setup(handout: false) = none
 
+  let backend-api = (
+    name: "touying",
+    theme: theme,
+    config: config,
+    utils: utils,
+  )
+
   let apply(
     body,
     paper: "presentation-16-9",
@@ -130,6 +151,7 @@
     date: none,
     api: none,
     section-slide-fn: none,
+    backend-customize: none,
   ) = {
     let new-section-slide-fn = if api == none or section-slide-fn == none {
       none
@@ -153,7 +175,17 @@
         page.insert("fill", page-config.fill)
       }
 
-      theme-function.with(
+      let customization = if backend-customize == none {
+        (:)
+      } else {
+        let value = backend-customize(api)
+        if value == none { (:) } else { value }
+      }
+      let theme-args = customization.at("theme-args", default: (:))
+      let theme-config = customization.at("theme-config", default: ())
+      let customized-theme = theme-function.with(..theme-args)
+
+      let configured-theme = customized-theme.with(
         touying.config-page(..page),
         touying.config-common(
           handout: handout,
@@ -174,7 +206,9 @@
           },
           date: date,
         ),
-      )({
+        ..theme-config,
+      )
+      configured-theme({
         set text(size: fontsize * 1.25)
         body
       })
@@ -203,6 +237,7 @@
 
   (
     toolbox: toolbox,
+    api: backend-api,
     slide: slide,
     focus-slide: selected.focus-slide,
     last-slide: selected.last-slide,

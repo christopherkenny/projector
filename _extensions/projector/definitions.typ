@@ -287,6 +287,10 @@
 
 $if(theme)$
 #import "$theme$" as projector-theme-module
+$else$
+#let projector-theme-module = (:)
+$endif$
+
 #let projector-theme = if "projector-theme" in projector-theme-module {
   (api, body) => projector-theme-module.projector-theme(api, body)
 } else {
@@ -307,12 +311,11 @@ $if(theme)$
 } else {
   projector-default-section-slide
 }
-$else$
-#let projector-theme = (api, body) => body
-#let title-slide = projector-default-title-slide
-#let toc-slide = projector-default-toc-slide
-#let section-slide = projector-default-section-slide
-$endif$
+#let projector-backend = if "projector-backend" in projector-theme-module {
+  projector-theme-module.projector-backend
+} else {
+  none
+}
 
 #let backend-setup = backend.setup
 #let backend-apply = backend.apply

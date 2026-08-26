@@ -135,6 +135,7 @@
     date: date,
     api: api,
     section-slide-fn: section-slide,
+    backend-customize: projector-backend,
   )
 }
 

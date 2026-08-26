@@ -6,6 +6,7 @@ $highlighting-definitions$
 $endif$
 
 #let theme-api = (
+  backend: backend.api,
   slide: slide,
   focus-slide: focus-slide,
   last-slide: last-slide,

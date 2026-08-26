@@ -51,6 +51,10 @@
 
 #let configure(theme: "none") = (
   toolbox: toolbox,
+  api: (
+    name: "polylux",
+    theme: theme,
+  ),
   slide: slide,
   focus-slide: focus-slide,
   last-slide: last-slide,
@@ -60,7 +64,7 @@
   later: later,
   speaker-note: speaker-note,
   setup: setup,
-  apply: (body, paper: "presentation-16-9", margin: (x: 0.5in, y: 0.5in), fontsize: 11pt, handout: false, title: none, subtitle: none, authors: none, date: none, api: none, section-slide-fn: none) => body,
+  apply: (body, paper: "presentation-16-9", margin: (x: 0.5in, y: 0.5in), fontsize: 11pt, handout: false, title: none, subtitle: none, authors: none, date: none, api: none, section-slide-fn: none, backend-customize: none) => body,
   render-section: render-section,
   render-slide: render-slide,
   default-toc-slide: default-toc-slide,
